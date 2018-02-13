@@ -18,7 +18,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 module.exports = {
   entry: {
-    main: './src',
+    main: './src/client',
   },
   output: {
     path: path.resolve(__dirname, './dist'),
@@ -28,7 +28,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /src\/.+\.js$/,
+        test: /src\/client\/.+\.js$/,
         exclude: /node_modules/,
         loader: 'babel-loader',
       },
@@ -49,7 +49,7 @@ module.exports = {
         }), {}),
     }),
     new HTMLWebpackPlugin({
-      template: 'src/resources/templates/index.html',
+      template: 'src/client/resources/templates/index.html',
       inlineSource: '.js$',
     }),
     new HtmlWebpackInlineSourcePlugin(),

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import Root from 'app/react/root';
-import store from 'app/redux/store';
+import Root from 'client/app/react/root';
+import store from 'client/app/redux/store';
 
 export default class App extends Component {
   constructor(props) {

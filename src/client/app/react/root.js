@@ -1,5 +1,5 @@
 import React from 'react';
-import routes from 'app/react/routes';
+import routes from 'client/app/react/routes';
 
 /**
  * Application root.

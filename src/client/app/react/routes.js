@@ -1,10 +1,10 @@
 import React from 'react';
 import { Switch, Route } from 'react-router';
-import Container from 'app/react/containers/container';
+import Secrets from 'client/app/react/containers/secrets';
 
 const routes = (
   <Switch>
-    <Route path="*" component={Container} />
+    <Route path="*" component={Secrets} />
   </Switch>
 );
 

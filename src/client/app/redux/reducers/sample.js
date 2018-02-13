@@ -1,5 +1,5 @@
-import { INCREMENT } from 'app/redux/actions/sample';
-import createReducer from 'app/redux/reducers/create-reducer';
+import { INCREMENT } from 'client/app/redux/actions/sample';
+import createReducer from 'client/app/redux/reducers/create-reducer';
 
 const initialState = {
   num: 1,
