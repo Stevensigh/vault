@@ -12,6 +12,8 @@
     "stage-0"
   ],
   "plugins": [
+    "transform-decorators-legacy",
+    "react-elemental",
     ["module-resolver", {
       "root": [
         "./src"

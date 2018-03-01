@@ -1,24 +1,35 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { Elemental } from 'react-elemental';
+import {
+  karlaBold,
+  karlaRegular,
+  sourceCodeProRegular,
+  sourceCodeProMedium,
+} from 'react-elemental-fonts';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import Root from 'client/app/react/root';
 import store from 'client/app/redux/store';
 
-export default class App extends Component {
-  constructor(props) {
-    super(props);
+const App = () => (
+  <Provider store={store}>
+    <BrowserRouter>
+      <Elemental
+        fontOpts={{
+          primary: {
+            regular: karlaRegular,
+            bold: karlaBold,
+          },
+          secondary: {
+            regular: sourceCodeProRegular,
+            bold: sourceCodeProMedium,
+          },
+        }}
+      >
+        <Root />
+      </Elemental>
+    </BrowserRouter>
+  </Provider>
+);
 
-    // One-time stateful initialization procedures
-    window.console.log('init');
-  }
-
-  render() {
-    return (
-      <Provider store={store}>
-        <BrowserRouter>
-          <Root />
-        </BrowserRouter>
-      </Provider>
-    );
-  }
-}
+export default App;
