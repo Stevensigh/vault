@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import { Helmet } from 'react-helmet';
 import { colors, Spacing, Spinner } from 'react-elemental';
 import levenshtein from 'fast-levenshtein';
 import { withResource } from 'supercharged/client';
 import Secret from 'client/app/react/containers/secrets/secret';
-import Header from 'client/app/react/components/header';
 import SearchField from 'client/app/react/components/secrets/search-field';
-import Container from 'client/app/react/components/ui/container';
 import Delayed from 'client/app/react/components/ui/delayed';
 import withForm from 'client/app/react/hoc/with-form';
 
@@ -34,12 +33,12 @@ class SecretsContainer extends Component {
       levenshtein.get(search.toLowerCase(), name.toLowerCase()) <= 3);
 
     return (
-      <Container>
-        <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
-          <Spacing bottom>
-            <Header />
-          </Spacing>
+      <div>
+        <Helmet>
+          <title>Secrets - Vault</title>
+        </Helmet>
 
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
           <Spacing bottom>
             <SearchField
               value={search}
@@ -57,7 +56,7 @@ class SecretsContainer extends Component {
             </Spacing>
           ))}
         </div>
-      </Container>
+      </div>
     );
   }
 }

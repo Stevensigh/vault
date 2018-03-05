@@ -1,12 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { colors, sizes, Button, Spacing, Text, TextField } from 'react-elemental';
+import {
+  colors,
+  sizes,
+  Button,
+  Spacing,
+  Text,
+  TextField,
+} from 'react-elemental';
 import LongArrowRight from 'client/app/react/components/ui/icon/long-arrow-right';
 
 /**
  * Field for entering the master decryption password.
  */
-const PasswordField = ({ value, error, onChange, onSubmit }) => (
+const PasswordField = ({ value, error, disabled, onChange, onSubmit }) => (
   <form style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
     <Spacing size="large" bottom>
       <Text size="delta" color="gray20">
@@ -19,9 +26,11 @@ const PasswordField = ({ value, error, onChange, onSubmit }) => (
       value={value}
       onChange={onChange}
       error={error}
+      disabled={disabled}
       style={{
         color: colors.gray10,
         fontSize: sizes.beta,
+        opacity: disabled ? 0.6 : 1,
       }}
       secondary
     />
@@ -44,6 +53,7 @@ const PasswordField = ({ value, error, onChange, onSubmit }) => (
 PasswordField.propTypes = {
   value: PropTypes.string.isRequired,
   error: PropTypes.string,
+  disabled: PropTypes.bool.isRequired,
   onChange: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
 };

@@ -3,6 +3,7 @@ import { colors, Spacing, Text } from 'react-elemental';
 import { withResource } from 'supercharged/client';
 import copy from 'copy-text-to-clipboard';
 import Secret from 'client/app/react/components/secrets/secret';
+import Box from 'client/app/react/components/ui/box';
 
 class SecretContainer extends Component {
   state = { isValueShown: null, isCopied: false };
@@ -35,14 +36,7 @@ class SecretContainer extends Component {
     const { isValueShown, isCopied } = this.state;
 
     return (
-      <Spacing
-        style={{ backgroundColor: 'rgb(18, 18, 18)', borderRadius: '3px' }}
-        top
-        right
-        bottom
-        left
-        padding
-      >
+      <Box>
         <Secret
           name={name}
           link={link}
@@ -59,7 +53,7 @@ class SecretContainer extends Component {
             </Text>
           </Spacing>
         )}
-      </Spacing>
+      </Box>
     );
   }
 }

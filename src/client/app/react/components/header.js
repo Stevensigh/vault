@@ -1,7 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Spacing, Tabs, Text } from 'react-elemental';
 import Logo from 'client/app/react/components/ui/logo';
 
+/**
+ * Single tab in the header.
+ */
 const HeaderTab = ({ isSelected, text }) => (
   <Spacing top bottom>
     <Spacing size="small" right left>
@@ -12,7 +16,15 @@ const HeaderTab = ({ isSelected, text }) => (
   </Spacing>
 );
 
-const Header = () => (
+HeaderTab.propTypes = {
+  isSelected: PropTypes.bool.isRequired,
+  text: PropTypes.string.isRequired,
+};
+
+/**
+ * Global header for navigation.
+ */
+const Header = ({ tab, onChange }) => (
   <header>
     <Spacing style={{ display: 'flex', justifyContent: 'space-between' }} bottom>
       <Spacing top>
@@ -21,10 +33,11 @@ const Header = () => (
 
       <Tabs
         options={[
-          { value: 'secrets', label: <HeaderTab text="Secrets" isSelected /> },
-          { value: 'admin', label: <HeaderTab text="Admin" /> },
+          { value: 'secrets', label: <HeaderTab text="Secrets" isSelected={tab === 'secrets'} /> },
+          { value: 'admin', label: <HeaderTab text="Admin" isSelected={tab === 'admin'} /> },
         ]}
-        value="secrets"
+        value={tab}
+        onChange={onChange}
         secondary
         invert
         fit
@@ -32,5 +45,10 @@ const Header = () => (
     </Spacing>
   </header>
 );
+
+Header.propTypes = {
+  tab: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
 
 export default Header;

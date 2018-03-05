@@ -86,6 +86,7 @@ class Login extends Component {
                 onChange={handleChange('password')}
                 onSubmit={this.handleLoginSubmit}
                 error={loginVerify.err && loginVerify.err.message}
+                disabled={!loginVerify.isLoaded}
               />
             </div>
 

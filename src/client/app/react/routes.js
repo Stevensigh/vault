@@ -1,12 +1,13 @@
 import React from 'react';
 import { Switch, Redirect, Route } from 'react-router';
-import Login from 'client/app/react/containers/login';
-import Secrets from 'client/app/react/containers/secrets';
+import AuthContainer from 'client/app/react/containers/auth';
+import LoginContainer from 'client/app/react/containers/login';
 
 const routes = (
   <Switch>
-    <Route path="/secrets" component={Secrets} exact />
-    <Route path="/login" component={Login} />
+    <Route path="/admin" component={AuthContainer} exact />
+    <Route path="/secrets" component={AuthContainer} exact />
+    <Route path="/login" component={LoginContainer} exact />
     <Redirect to="/login" />
   </Switch>
 );
