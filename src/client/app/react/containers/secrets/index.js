@@ -29,8 +29,9 @@ class SecretsContainer extends Component {
     } = this.props;
 
     // Only display secrets that match the specified search term.
-    const displaySecrets = data
-      .filter(({ name }) => levenshtein.get(search.toLowerCase(), name.toLowerCase()) <= 3);
+    const displaySecrets = data.filter(({ name }) => !search ||
+      name.toLowerCase().indexOf(search.toLowerCase()) !== -1 ||
+      levenshtein.get(search.toLowerCase(), name.toLowerCase()) <= 3);
 
     return (
       <Container>
