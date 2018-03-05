@@ -1,5 +1,5 @@
 import React from 'react';
-import { colors, Spacing } from 'react-elemental';
+import { colors } from 'react-elemental';
 import routes from 'client/app/react/routes';
 
 /**
@@ -19,9 +19,7 @@ const Root = () => (
       }}
     />
 
-    <Spacing size="80px" style={{ margin: 'auto', maxWidth: '1200px' }} right left padding>
-      {routes}
-    </Spacing>
+    {routes}
   </div>
 );
 

@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import sampleReducer from 'client/app/redux/reducers/sample';
+import authReducer from 'client/app/redux/reducers/auth';
 
 const reducer = combineReducers({
-  sample: sampleReducer,
+  auth: authReducer,
 });
 
 export default reducer;
