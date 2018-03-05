@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { LoadingBar, Spacing } from 'react-elemental';
 import { withResource } from 'supercharged/client';
 import Container from 'client/app/react/components/ui/container';
-import Footer from 'client/app/react/components/footer';
+import Footer from 'client/app/react/components/login/footer';
 import PasswordField from 'client/app/react/components/login/password-field';
 import Logo from 'client/app/react/components/ui/logo';
 import Delayed from 'client/app/react/components/ui/delayed';
