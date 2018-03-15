@@ -15,14 +15,14 @@ const Footer = () => (
       top
       bottom
     >
-      <div>
+      <Spacing right>
         <Text color="gray80" size="kilo" bold inline>
           Vault&nbsp;
         </Text>
         <Text color="gray80" size="kilo" inline>
           is an open source secrets and credentials manager.
         </Text>
-      </div>
+      </Spacing>
 
       <Text color="gray60" size="kilo">
         {FOOTER_TEXT}
