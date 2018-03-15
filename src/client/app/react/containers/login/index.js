@@ -31,7 +31,7 @@ class Login extends Component {
     }).isRequired,
     history: PropTypes.shape({
       push: PropTypes.func.isRequired,
-    }),
+    }).isRequired,
   };
 
   handleLoginSubmit = (evt) => {
