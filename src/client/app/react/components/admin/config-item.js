@@ -9,7 +9,7 @@ import Box from 'client/app/react/components/ui/box';
 const ConfigItem = ({ title, text, children }) => (
   <Box>
     <div style={{ alignItems: 'center', display: 'flex', justifyContent: 'space-between' }}>
-      <div style={{ maxWidth: '400px' }}>
+      <div style={{ maxWidth: '500px' }}>
         <Spacing size="small" bottom>
           <Text size="kilo" color="gray50" style={{ letterSpacing: '1px' }} uppercase bold>
             {title}

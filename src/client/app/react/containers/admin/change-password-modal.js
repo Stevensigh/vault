@@ -2,28 +2,28 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Alert } from 'react-elemental';
 import { withResource } from 'supercharged/client';
-import DeleteModal from 'client/app/react/components/admin/delete-modal';
+import ChangePasswordModal from 'client/app/react/components/admin/change-password-modal';
 
 /**
- * Resource wrapper for the delete modal.
+ * Resource wrapper for the master decryption password change modal.
  */
-class DeleteModalContainer extends Component {
+class ChangePasswordModalContainer extends Component {
   static propTypes = {
-    deleteSecrets: PropTypes.shape({
+    password: PropTypes.shape({
       err: PropTypes.object,
       invoke: PropTypes.func.isRequired,
     }).isRequired,
     onHide: PropTypes.func.isRequired,
   };
 
-  handleSubmit = (evt) => {
+  handleSubmit = (evt, password) => {
     evt.preventDefault();
 
-    this.props.deleteSecrets.invoke();
+    this.props.password.invoke({ password });
   };
 
   render() {
-    const { onHide, deleteSecrets: { isLoaded, err, data } } = this.props;
+    const { onHide, password: { isLoaded, err, data } } = this.props;
 
     const alert = (() => {
       if (err) {
@@ -43,7 +43,7 @@ class DeleteModalContainer extends Component {
             type="success"
             size="beta"
             title="Success"
-            message="All Vault secrets have been successfully deleted."
+            message="The master decryption password has been successfully updated."
           />
         );
       }
@@ -52,7 +52,7 @@ class DeleteModalContainer extends Component {
     })();
 
     return (
-      <DeleteModal
+      <ChangePasswordModal
         alert={alert}
         isLoading={!isLoaded}
         onHide={onHide}
@@ -63,8 +63,8 @@ class DeleteModalContainer extends Component {
 }
 
 export default withResource({
-  key: 'deleteSecrets',
-  method: 'DELETE',
-  endpoint: '/api/admin/secrets',
+  key: 'password',
+  method: 'PUT',
+  endpoint: '/api/admin/password',
   invokeOnMount: false,
-})(DeleteModalContainer);
+})(ChangePasswordModalContainer);

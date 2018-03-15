@@ -23,7 +23,10 @@ const BaseModal = ({
   onHide,
 }) => (
   <Modal
-    style={{ backgroundColor: colors.gray90 }}
+    style={{
+      backgroundColor: colors.gray90,
+      boxShadow: '0px 0px 15px 5px rgba(0, 0, 0, 0.2)',
+    }}
     onHide={onHide}
     persistent
   >
@@ -34,7 +37,7 @@ const BaseModal = ({
     )}
 
     <Spacing
-      size="large"
+      size="44px"
       style={{ display: 'flex', flexDirection: 'column' }}
       top
       right
