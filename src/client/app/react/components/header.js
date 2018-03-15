@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { Spacing, Tabs, Text } from 'react-elemental';
 import Logo from 'client/app/react/components/ui/logo';
 
@@ -28,7 +29,9 @@ const Header = ({ tab, onChange }) => (
   <header>
     <Spacing style={{ display: 'flex', justifyContent: 'space-between' }} bottom>
       <Spacing top>
-        <Logo style={{ fill: 'white', width: '130px' }} />
+        <Link to="/secrets">
+          <Logo style={{ fill: 'white', width: '130px' }} />
+        </Link>
       </Spacing>
 
       <Tabs
