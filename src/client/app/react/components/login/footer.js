@@ -10,7 +10,11 @@ const {
  */
 const Footer = () => (
   <footer>
-    <Spacing style={{ display: 'flex', justifyContent: 'space-between' }} top bottom>
+    <Spacing
+      style={{ alignItems: 'center', display: 'flex', justifyContent: 'space-between' }}
+      top
+      bottom
+    >
       <div>
         <Text color="gray80" size="kilo" bold inline>
           Vault&nbsp;
