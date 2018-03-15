@@ -2,28 +2,28 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Alert } from 'react-elemental';
 import { withResource } from 'supercharged/client';
-import ChangePasswordModal from 'client/app/react/components/admin/change-password-modal';
+import DeleteSecretsModal from 'client/app/react/components/admin/modal/delete-secrets';
 
 /**
- * Resource wrapper for the master decryption password change modal.
+ * Resource wrapper for the delete modal.
  */
-class ChangePasswordModalContainer extends Component {
+class DeleteSecretsModalContainer extends Component {
   static propTypes = {
-    password: PropTypes.shape({
+    deleteSecrets: PropTypes.shape({
       err: PropTypes.object,
       invoke: PropTypes.func.isRequired,
     }).isRequired,
     onHide: PropTypes.func.isRequired,
   };
 
-  handleSubmit = (evt, password) => {
+  handleSubmit = (evt) => {
     evt.preventDefault();
 
-    this.props.password.invoke({ password });
+    this.props.deleteSecrets.invoke();
   };
 
   render() {
-    const { onHide, password: { isLoaded, err, data } } = this.props;
+    const { onHide, deleteSecrets: { isLoaded, err, data } } = this.props;
 
     const alert = (() => {
       if (err) {
@@ -43,7 +43,7 @@ class ChangePasswordModalContainer extends Component {
             type="success"
             size="beta"
             title="Success"
-            message="The master decryption password has been successfully updated."
+            message="All Vault secrets have been successfully deleted."
           />
         );
       }
@@ -52,7 +52,7 @@ class ChangePasswordModalContainer extends Component {
     })();
 
     return (
-      <ChangePasswordModal
+      <DeleteSecretsModal
         alert={alert}
         isLoading={!isLoaded}
         onHide={onHide}
@@ -63,8 +63,8 @@ class ChangePasswordModalContainer extends Component {
 }
 
 export default withResource({
-  key: 'password',
-  method: 'PUT',
-  endpoint: '/api/admin/password',
+  key: 'deleteSecrets',
+  method: 'DELETE',
+  endpoint: '/api/admin/secrets',
   invokeOnMount: false,
-})(ChangePasswordModalContainer);
+})(DeleteSecretsModalContainer);

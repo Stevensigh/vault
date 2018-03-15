@@ -6,7 +6,7 @@ import BaseModal from 'client/app/react/components/ui/base-modal';
 /**
  * Presentational component for the admin delete modal.
  */
-const DeleteModal = ({ alert, isLoading, onHide, onSubmit }) => (
+const DeleteSecretsModal = ({ alert, isLoading, onHide, onSubmit }) => (
   <BaseModal
     isLoading={isLoading}
     onHide={onHide}
@@ -34,15 +34,15 @@ const DeleteModal = ({ alert, isLoading, onHide, onSubmit }) => (
   />
 );
 
-DeleteModal.propTypes = {
+DeleteSecretsModal.propTypes = {
   alert: PropTypes.node,
   isLoading: PropTypes.bool.isRequired,
   onHide: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
 };
 
-DeleteModal.defaultProps = {
+DeleteSecretsModal.defaultProps = {
   alert: null,
 };
 
-export default DeleteModal;
+export default DeleteSecretsModal;

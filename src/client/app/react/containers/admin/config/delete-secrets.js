@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { colors, Button } from 'react-elemental';
-import DeleteModalContainer from 'client/app/react/containers/admin/delete-modal';
+import DeleteSecretsModalContainer from 'client/app/react/containers/admin/modal/delete-secrets';
 import ConfigItem from 'client/app/react/components/admin/config-item';
 import withToggleState from 'client/app/react/hoc/with-toggle-state';
 
@@ -20,7 +20,7 @@ const DeleteSecretsConfigContainer = ({ isVisible, showModal, hideModal }) => (
     />
 
     {isVisible && (
-      <DeleteModalContainer onHide={hideModal} />
+      <DeleteSecretsModalContainer onHide={hideModal} />
     )}
   </ConfigItem>
 );

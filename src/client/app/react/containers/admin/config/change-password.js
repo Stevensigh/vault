@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'react-elemental';
-import ChangePasswordModalContainer from 'client/app/react/containers/admin/change-password-modal';
+import ChangePasswordModalContainer from 'client/app/react/containers/admin/modal/change-password';
 import ConfigItem from 'client/app/react/components/admin/config-item';
 import withToggleState from 'client/app/react/hoc/with-toggle-state';
 
