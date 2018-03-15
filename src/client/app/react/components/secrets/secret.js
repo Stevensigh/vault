@@ -112,7 +112,7 @@ export default class Secret extends Component {
         >
           <div>
             {isCompact ? (
-              <div>
+              <div style={{ alignItems: 'center', display: 'flex' }}>
                 <div
                   style={{
                     marginLeft: isActionPanelVisible ? '-70px' : 0,
@@ -125,12 +125,10 @@ export default class Secret extends Component {
                 </div>
                 <div
                   style={{
-                    height: '0px',
                     opacity: isActionPanelVisible ? 1 : 0,
                     pointerEvents: isActionPanelVisible ? 'inherit' : 'none',
-                    position: 'relative',
-                    right: isActionPanelVisible ? 0 : '-70px',
-                    top: '-45px',
+                    position: 'absolute',
+                    marginLeft: isActionPanelVisible ? 0 : '70px',
                     transition: 'all 0.15s ease',
                   }}
                 >
