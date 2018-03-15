@@ -1,14 +1,37 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { colors, Spacing, Text } from 'react-elemental';
 import { withResource } from 'supercharged/client';
 import copy from 'copy-text-to-clipboard';
+import DeleteSecretModalContainer from 'client/app/react/containers/secrets/modal/delete-secret';
 import Secret from 'client/app/react/components/secrets/secret';
 import Box from 'client/app/react/components/ui/box';
 
 class SecretContainer extends Component {
-  state = { isValueShown: null, isCopied: false };
+  static propTypes = {
+    name: PropTypes.string.isRequired,
+    identity: PropTypes.string,
+    link: PropTypes.string,
+    secretValue: PropTypes.shape({
+      invoke: PropTypes.func.isRequired,
+    }).isRequired,
+  };
+
+  static defaultProps = {
+    identity: null,
+    link: null,
+  };
+
+  state = {
+    isValueShown: null,
+    isCopied: false,
+    isDeleteModalVisible: false,
+  };
 
   fetchSecretValue = (cb) => this.props.secretValue.invoke(cb);
+
+  handleDeleteModalVisibilityChange = (isVisible) =>
+    () => this.setState({ isDeleteModalVisible: isVisible });
 
   handleCopyClick = () => {
     const { secretValue } = this.props;
@@ -32,18 +55,20 @@ class SecretContainer extends Component {
   };
 
   render() {
-    const { secretValue: { value, err }, name, link } = this.props;
-    const { isValueShown, isCopied } = this.state;
+    const { secretValue: { data: value, err }, name, identity, link } = this.props;
+    const { isValueShown, isCopied, isDeleteModalVisible } = this.state;
 
     return (
       <Box>
         <Secret
           name={name}
+          identity={identity}
           link={link}
           value={isValueShown && value}
           isCopied={isCopied}
           onCopyClick={this.handleCopyClick}
           onShowClick={this.handleShowClick}
+          onDeleteClick={this.handleDeleteModalVisibilityChange(true)}
         />
 
         {err && (
@@ -52,6 +77,13 @@ class SecretContainer extends Component {
               {err.message}
             </Text>
           </Spacing>
+        )}
+
+        {isDeleteModalVisible && (
+          <DeleteSecretModalContainer
+            name={name}
+            onHide={this.handleDeleteModalVisibilityChange(false)}
+          />
         )}
       </Box>
     );

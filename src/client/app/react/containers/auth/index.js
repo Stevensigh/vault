@@ -35,7 +35,7 @@ export default class AuthContainer extends Component {
 
     return (
       <Container>
-        <Spacing bottom>
+        <Spacing size="large" bottom>
           <Header
             tab={tab}
             onChange={this.handleTabChange}
