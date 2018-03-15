@@ -6,13 +6,22 @@ import withToggleState from 'client/app/react/hoc/with-toggle-state';
 /**
  * UI wrapper component for segmenting multiple children nodes into a single visual block.
  */
-const Box = ({ isHover, handleMouseEnter, handleMouseLeave, children, ...props }) => (
+const Box = ({
+  isHover,
+  handleMouseEnter,
+  handleMouseLeave,
+  style,
+  children,
+  ...props
+}) => (
   <Spacing
     style={{
       backgroundColor: 'rgb(18, 18, 18)',
       borderRadius: '3px',
       boxShadow: `4px 4px 10px 0px rgba(0, 0, 0, ${isHover ? 0.17 : 0.1})`,
+      boxSizing: 'border-box',
       transition: 'all 0.25s ease',
+      ...style,
     }}
     onMouseEnter={handleMouseEnter}
     onMouseLeave={handleMouseLeave}
@@ -31,7 +40,12 @@ Box.propTypes = {
   isHover: PropTypes.bool.isRequired,
   handleMouseEnter: PropTypes.func.isRequired,
   handleMouseLeave: PropTypes.func.isRequired,
+  style: PropTypes.object,
   children: PropTypes.node.isRequired,
+};
+
+Box.defaultProps = {
+  style: {},
 };
 
 export default withToggleState({
