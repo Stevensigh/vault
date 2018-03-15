@@ -7,7 +7,7 @@ import { Spacing } from 'react-elemental';
  */
 const Container = ({ children, ...props }) => (
   <Spacing
-    size="80px"
+    size="40px"
     style={{ margin: 'auto', maxWidth: '1200px' }}
     right
     left

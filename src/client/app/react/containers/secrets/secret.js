@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { compose } from 'redux';
 import PropTypes from 'prop-types';
 import { colors, Spacing, Text } from 'react-elemental';
 import { withResource } from 'supercharged/client';
@@ -6,12 +7,20 @@ import copy from 'copy-text-to-clipboard';
 import DeleteSecretModalContainer from 'client/app/react/containers/secrets/modal/delete-secret';
 import Secret from 'client/app/react/components/secrets/secret';
 import Box from 'client/app/react/components/ui/box';
+import withDimensions from 'client/app/react/hoc/with-dimensions';
 
+// Number of pixels before which the layout should be compact.
+const COMPACT_THRESHOLD_PIXELS = 600;
+
+/**
+ * Resource and dimensions wrapping container for a single secret fetched from the server.
+ */
 class SecretContainer extends Component {
   static propTypes = {
     name: PropTypes.string.isRequired,
     identity: PropTypes.string,
     link: PropTypes.string,
+    width: PropTypes.number.isRequired,
     secretValue: PropTypes.shape({
       invoke: PropTypes.func.isRequired,
     }).isRequired,
@@ -55,8 +64,10 @@ class SecretContainer extends Component {
   };
 
   render() {
-    const { secretValue: { data: value, err }, name, identity, link } = this.props;
+    const { name, identity, link, secretValue: { data: value, err }, width } = this.props;
     const { isValueShown, isCopied, isDeleteModalVisible } = this.state;
+
+    const isCompact = width <= COMPACT_THRESHOLD_PIXELS;
 
     return (
       <Box>
@@ -66,6 +77,7 @@ class SecretContainer extends Component {
           link={link}
           value={isValueShown && value}
           isCopied={isCopied}
+          isCompact={isCompact}
           onCopyClick={this.handleCopyClick}
           onShowClick={this.handleShowClick}
           onDeleteClick={this.handleDeleteModalVisibilityChange(true)}
@@ -90,10 +102,13 @@ class SecretContainer extends Component {
   }
 }
 
-export default withResource({
-  key: 'secretValue',
-  method: 'POST',
-  endpoint: '/api/secret',
-  data: ({ name }) => ({ name }),
-  invokeOnMount: false,
-})(SecretContainer);
+export default compose(
+  withDimensions,
+  withResource({
+    key: 'secretValue',
+    method: 'POST',
+    endpoint: '/api/secret',
+    data: ({ name }) => ({ name }),
+    invokeOnMount: false,
+  }),
+)(SecretContainer);
