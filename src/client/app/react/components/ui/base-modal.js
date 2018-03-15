@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   colors,
-  Link,
+  Button,
   LoadingBar,
   Modal,
   Spacing,
@@ -74,13 +74,13 @@ const BaseModal = ({
       left
       padding
     >
-      <Text color="gray30" uppercase bold>
-        <Link activeColor={colors.gray80} onClick={onHide}>
+      <Button style={{ backgroundColor: 'transparent' }} onClick={onHide}>
+        <Text color="gray30" size="kilo" uppercase bold>
           Cancel
-        </Link>
-      </Text>
+        </Text>
+      </Button>
 
-      <Spacing left>
+      <Spacing size="small" left>
         {submit}
       </Spacing>
     </Spacing>
