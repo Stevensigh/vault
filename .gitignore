@@ -1,3 +1,4 @@
 .env
+.salt
 dist/
 node_modules/

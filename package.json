@@ -15,7 +15,8 @@
     "test": "jest",
     "test:watch": "npm run test -- --watch",
     "cover": "npm run test -- --coverage",
-    "coveralls": "npm run cover && cat coverage/lcov.info | coveralls"
+    "coveralls": "npm run cover && cat coverage/lcov.info | coveralls",
+    "postinstall": "node src/server/scripts/generate-salt.js"
   },
   "repository": {
     "type": "git",
