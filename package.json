@@ -31,6 +31,7 @@
     "test"
   ],
   "dependencies": {
+    "cookie-parser": "^1.4.3",
     "copy-text-to-clipboard": "^1.0.4",
     "dotenv": "^5.0.1",
     "express": "^4.16.2",
