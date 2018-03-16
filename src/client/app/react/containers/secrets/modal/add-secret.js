@@ -13,10 +13,15 @@ class AddSecretModalContainer extends Component {
     onHide: PropTypes.func.isRequired,
   };
 
-  handleSubmit = (evt, { name, link, identity, secret }) => {
+  handleSubmit = (evt, form) => {
     evt.preventDefault();
 
-    this.props.addSecret.invoke({ name, link, identity, secret });
+    // Retain only fields that have truthy (non-zero length) values
+    const data = Object.entries(form)
+      .filter(([key, value]) => key && value)
+      .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});
+
+    this.props.addSecret.invoke(data);
   };
 
   render() {
