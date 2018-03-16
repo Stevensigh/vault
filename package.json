@@ -5,7 +5,7 @@
   "scripts": {
     "clean": "rm -rf dist/",
     "build:client": "webpack",
-    "build:client:watch": "npm run build -- --watch",
+    "build:client:watch": "npm run build:client -- --watch",
     "build:server": "babel src/server -d dist/server",
     "build:server:watch": "npm run build:server -- --watch",
     "start:client": "webpack-dev-server --watch --disable-host-check",
@@ -33,6 +33,7 @@
     "dotenv": "^5.0.1",
     "express": "^4.16.2",
     "fast-levenshtein": "^2.0.6",
+    "mysql": "^2.15.0",
     "prop-types": "^15.6.1",
     "raven": "^2.4.2",
     "react": "^16.2.0",
