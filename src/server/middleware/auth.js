@@ -4,9 +4,12 @@ import {
   CODE_SESSION_EXPIRED,
 } from 'shared/constants/error';
 
+export const DEFAULT_SESSION_EXPIRY_INTERVAL = 3600;
+export const DEFAULT_SESSION_COOKIE_NAME = 'vault-sid';
+
 const {
-  SESSION_EXPIRY_INTERVAL = 3600,
-  SESSION_COOKIE_NAME = 'vault-sid',
+  SESSION_EXPIRY_INTERVAL = DEFAULT_SESSION_EXPIRY_INTERVAL,
+  SESSION_COOKIE_NAME = DEFAULT_SESSION_COOKIE_NAME,
 } = process.env;
 
 // In-memory record of session cookies and passwords
