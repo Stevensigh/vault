@@ -74,15 +74,17 @@ const BaseModal = ({
       left
       padding
     >
-      <Button style={{ backgroundColor: 'transparent' }} onClick={onHide}>
-        <Text color="gray30" size="kilo" uppercase bold>
-          Cancel
-        </Text>
-      </Button>
+      {onHide && (
+        <Spacing size="small" right>
+          <Button style={{ backgroundColor: 'transparent' }} onClick={onHide}>
+            <Text color="gray30" size="kilo" uppercase bold>
+              Cancel
+            </Text>
+          </Button>
+        </Spacing>
+      )}
 
-      <Spacing size="small" left>
-        {submit}
-      </Spacing>
+      {submit}
     </Spacing>
   </Modal>
 );
@@ -93,11 +95,12 @@ BaseModal.propTypes = {
   alert: PropTypes.node,
   submit: PropTypes.node.isRequired,
   isLoading: PropTypes.bool.isRequired,
-  onHide: PropTypes.func.isRequired,
+  onHide: PropTypes.func,
 };
 
 BaseModal.defaultProps = {
   alert: null,
+  onHide: null,
 };
 
 export default BaseModal;
