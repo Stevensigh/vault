@@ -9,12 +9,13 @@ import React, { Component } from 'react';
  * @param {Object} opts Object of options, `key`, describing the name of the prop to use for
  *                      describing the current toggle state, `enable`, describing the name of the
  *                      prop to use for enabling the toggle state, and `disable`, describing the
- *                      name of the prop to use for disabling the toggle state.
+ *                      name of the prop to use for disabling the toggle state. Optionally specify
+ *                      `initial` as a boolean to denote the initial toggle state.
  * @returns {Function} HOC factory that takes a component class to wrap, and returns the HOC itself.
  */
-const withToggleState = ({ key, enable, disable }) => (WrappedComponent) =>
+const withToggleState = ({ key, enable, disable, initial = false }) => (WrappedComponent) =>
   class WithToggleStateHOC extends Component {
-    state = { isToggled: false };
+    state = { isToggled: initial };
 
     handleToggle = (isToggled) => () => this.setState({ isToggled });
 
