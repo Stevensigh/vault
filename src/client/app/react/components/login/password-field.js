@@ -17,7 +17,7 @@ const PasswordField = ({ value, error, disabled, onChange, onSubmit }) => (
   <form style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
     <Spacing size="large" bottom>
       <Text size="delta" color="gray20">
-        Enter the master decryption password to continue.
+        Enter the master password to continue.
       </Text>
     </Spacing>
 
@@ -33,6 +33,7 @@ const PasswordField = ({ value, error, disabled, onChange, onSubmit }) => (
         opacity: disabled ? 0.6 : 1,
       }}
       secondary
+      autoFocus
     />
 
     <Spacing size="large" style={{ alignSelf: 'flex-end' }} top>
