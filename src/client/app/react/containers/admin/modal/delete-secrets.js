@@ -65,6 +65,6 @@ class DeleteSecretsModalContainer extends Component {
 export default withResource({
   key: 'deleteSecrets',
   method: 'DELETE',
-  endpoint: '/api/admin/secrets',
+  endpoint: '/api/secrets',
   invokeOnMount: false,
 })(DeleteSecretsModalContainer);

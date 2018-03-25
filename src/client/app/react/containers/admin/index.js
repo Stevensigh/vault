@@ -2,8 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Spacing, Text } from 'react-elemental';
 import BugsConfigContainer from 'client/app/react/containers/admin/config/bugs';
-import ChangePasswordConfigContainer
-  from 'client/app/react/containers/admin/config/change-password';
+import ChangePasswordConfigContainer from 'client/app/react/containers/admin/config/change-password';
 import DeleteSecretsConfigContainer from 'client/app/react/containers/admin/config/delete-secrets';
 
 /**

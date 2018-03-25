@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { bindActionCreators, compose } from 'redux';
-import { connect } from 'react-redux';
+import { compose } from 'redux';
 import { LoadingBar, Spacing } from 'react-elemental';
 import { withResource } from 'supercharged/client';
 import Container from 'client/app/react/components/ui/container';
@@ -9,8 +8,10 @@ import Footer from 'client/app/react/components/login/footer';
 import PasswordField from 'client/app/react/components/login/password-field';
 import Logo from 'client/app/react/components/ui/logo';
 import Delayed from 'client/app/react/components/ui/delayed';
+import WarnAlert from 'client/app/react/components/ui/alert/warn';
 import withForm from 'client/app/react/hoc/with-form';
-import { setDecryptionPassword } from 'client/app/redux/actions/auth';
+import withError from 'client/app/react/hoc/with-error';
+import { CODE_SESSION_UNAUTHENTICATED, CODE_SESSION_EXPIRED } from 'shared/constants/error';
 
 /**
  * Top-level container for the login (master password) view.
@@ -26,12 +27,14 @@ class Login extends Component {
       password: PropTypes.string,
     }).isRequired,
     handleChange: PropTypes.func.isRequired,
-    actions: PropTypes.shape({
-      setDecryptionPassword: PropTypes.func.isRequired,
-    }).isRequired,
     history: PropTypes.shape({
       push: PropTypes.func.isRequired,
     }).isRequired,
+    error: PropTypes.string,
+  };
+
+  static defaultProps = {
+    error: null,
   };
 
   handleLoginSubmit = (evt) => {
@@ -46,7 +49,6 @@ class Login extends Component {
 
     loginVerify.invoke({ password }, (err) => {
       if (!err) {
-        actions.setDecryptionPassword(password);
         history.push('/secrets');
       }
     });
@@ -57,6 +59,7 @@ class Login extends Component {
       loginVerify,
       handleChange,
       form: { password = '' },
+      error,
     } = this.props;
 
     return (
@@ -69,6 +72,15 @@ class Login extends Component {
 
         <Container>
           <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+            {error && (
+              <Spacing size="large" style={{ position: 'absolute' }} top>
+                <WarnAlert
+                  title="Warning"
+                  message={error}
+                />
+              </Spacing>
+            )}
+
             <div
               style={{
                 display: 'flex',
@@ -98,13 +110,18 @@ class Login extends Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  actions: bindActionCreators({ setDecryptionPassword }, dispatch),
-});
-
 export default compose(
   withForm,
-  connect(null, mapDispatchToProps),
+  withError(({ location: { state: { code } = {} } }) => {
+    switch (code) {
+      case CODE_SESSION_EXPIRED:
+        return 'Your session has expired. Please log in again.';
+      case CODE_SESSION_UNAUTHENTICATED:
+        return 'Your session is not currently authenticated. Please log in.';
+      default:
+        return null;
+    }
+  }),
   withResource({
     key: 'loginVerify',
     method: 'POST',
