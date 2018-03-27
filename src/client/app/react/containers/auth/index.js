@@ -5,6 +5,7 @@ import { Redirect } from 'react-router-dom';
 import { Spacing } from 'react-elemental';
 import { withResource } from 'supercharged/client';
 import AdminContainer from 'client/app/react/containers/admin';
+import AuthStatusPollContainer from 'client/app/react/containers/auth/status-poll';
 import SecretsContainer from 'client/app/react/containers/secrets';
 import Header from 'client/app/react/components/header';
 import Container from 'client/app/react/components/ui/container';
@@ -40,6 +41,7 @@ class AuthContainer extends Component {
 
   render() {
     const {
+      history: { push },
       match: { path },
       auth: { isLoaded, err },
     } = this.props;
@@ -69,6 +71,8 @@ class AuthContainer extends Component {
             <Route path="/secrets" component={SecretsContainer} exact />
           </Switch>
         </Container>
+
+        <AuthStatusPollContainer navigate={push} />
       </div>
     );
   }
