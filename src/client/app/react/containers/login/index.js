@@ -71,9 +71,16 @@ class Login extends Component {
         )}
 
         <Container>
-          <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              height: '100vh',
+              position: 'relative',
+            }}
+          >
             {error && (
-              <Spacing size="large" style={{ position: 'absolute' }} top>
+              <Spacing size="large" style={{ position: 'absolute', right: 0 }} top>
                 <WarnAlert
                   title="Warning"
                   message={error}

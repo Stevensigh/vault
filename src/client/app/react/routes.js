@@ -8,7 +8,7 @@ const routes = (
     <Route path="/admin" component={AuthContainer} exact />
     <Route path="/secrets" component={AuthContainer} exact />
     <Route path="/login" component={LoginContainer} exact />
-    <Redirect to="/login" />
+    <Redirect to="/secrets" />
   </Switch>
 );
 
