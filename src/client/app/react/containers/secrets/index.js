@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { compose } from 'redux';
-import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { colors, Spacing, Spinner } from 'react-elemental';
 import levenshtein from 'fast-levenshtein';
@@ -9,16 +8,12 @@ import { withResource } from 'supercharged/client';
 import SecretContainer from 'client/app/react/containers/secrets/secret';
 import AddSecretModalContainer from 'client/app/react/containers/secrets/modal/add-secret';
 import SecretsMeta from 'client/app/react/components/secrets/meta';
-import SearchField from 'client/app/react/components/secrets/search-field';
+import SearchField from 'client/app/react/components/ui/search-field';
 import Delayed from 'client/app/react/components/ui/delayed';
 import withForm from 'client/app/react/hoc/with-form';
 
 class SecretsContainer extends Component {
   static propTypes = {
-    isDecryptionPasswordDefined: PropTypes.bool.isRequired,
-    history: PropTypes.shape({
-      push: PropTypes.func.isRequired,
-    }).isRequired,
     secrets: PropTypes.shape({
       isLoaded: PropTypes.bool.isRequired,
       data: PropTypes.array,
@@ -30,14 +25,6 @@ class SecretsContainer extends Component {
   };
 
   state = { isAddModalVisible: false };
-
-  componentDidMount() {
-    const { isDecryptionPasswordDefined, history } = this.props;
-
-    if (!isDecryptionPasswordDefined) {
-      history.push('/login');
-    }
-  }
 
   handleAddModalVisibilityChange = (isVisible) =>
     () => this.setState({ isAddModalVisible: isVisible });
@@ -62,10 +49,12 @@ class SecretsContainer extends Component {
         </Helmet>
 
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <Spacing bottom>
+          <Spacing size="large" bottom>
             <SearchField
               value={search}
+              placeholder="Search for a secret..."
               onChange={handleChange('search')}
+              style={{ width: '100%' }}
             />
           </Spacing>
 
@@ -80,9 +69,14 @@ class SecretsContainer extends Component {
             <Delayed>
               <Spinner ringColor={colors.gray90} style={{ margin: '0 auto' }} />
             </Delayed>
-          ) : displaySecrets.map(({ name, identity, link }) => (
-            <Spacing key={name} bottom>
-              <SecretContainer name={name} identity={identity} link={link} />
+          ) : displaySecrets.map(({ id, name, identity, link }) => (
+            <Spacing key={id} bottom>
+              <SecretContainer
+                id={id}
+                name={name}
+                identity={identity}
+                link={link}
+              />
             </Spacing>
           ))}
         </div>
@@ -97,13 +91,8 @@ class SecretsContainer extends Component {
   }
 }
 
-const mapStateToProps = ({ auth }) => ({
-  isDecryptionPasswordDefined: !!auth.decryptionPassword,
-});
-
 export default compose(
   withForm,
-  connect(mapStateToProps),
   withResource({
     key: 'secrets',
     method: 'GET',

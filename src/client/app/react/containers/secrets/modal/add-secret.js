@@ -68,6 +68,6 @@ class AddSecretModalContainer extends Component {
 export default withResource({
   key: 'addSecret',
   method: 'POST',
-  endpoint: '/api/secret',
+  endpoint: '/api/secrets',
   invokeOnMount: false,
 })(AddSecretModalContainer);
