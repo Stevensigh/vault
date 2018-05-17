@@ -28,6 +28,7 @@ export default class SecretsLogic extends BaseLogic {
 
     const errors = {
       ER_DUP_ENTRY: {
+        status: 409,
         code: CODE_DUPLICATE_SECRET_ERROR,
         message: 'A secret with this name already exists.',
       },
@@ -102,6 +103,7 @@ export default class SecretsLogic extends BaseLogic {
 
       if (!row) {
         return cb({
+          status: 404,
           code: CODE_NONEXISTENT_SECRET,
           message: 'The requested secret does not exist.',
         });

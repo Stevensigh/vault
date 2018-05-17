@@ -1,6 +1,12 @@
 import BaseLogic from 'server/logic/base';
 import SecretsManager from 'server/managers/secrets';
 import { VERIFY_KEY } from 'server/constants/auth';
+import {
+  CODE_MASTER_DECRYPTION_PASSWORD_INCORRECT,
+  CODE_CHANGE_PASSWORD_ERROR,
+  CODE_READ_SECRET_ERROR,
+  CODE_DELETE_SECRET_ERROR,
+} from 'shared/constants/error';
 
 export default class AuthLogic extends BaseLogic {
   constructor(ctx) {
@@ -18,13 +24,20 @@ export default class AuthLogic extends BaseLogic {
   verify(password, cb) {
     return this.manager.getEncVerify((err, secret) => {
       if (err) {
-        return cb(err);
+        return cb({
+          code: CODE_READ_SECRET_ERROR,
+          message: 'An error occurred when reading the master password verification key.',
+        });
       }
 
       const decryptVerify = this.ctx.crypto.decrypt(secret, password);
 
       if (decryptVerify !== VERIFY_KEY) {
-        return cb(new Error('Failed to verify password.'));
+        return cb({
+          status: 401,
+          code: CODE_MASTER_DECRYPTION_PASSWORD_INCORRECT,
+          message: 'The supplied master password is incorrect.',
+        });
       }
 
       return cb();
@@ -36,12 +49,24 @@ export default class AuthLogic extends BaseLogic {
 
     // Changing the master password invalidates all previous passwords.
     // Wipe all user-created secrets.
-    return this.manager.deleteAllSecrets(false, (err) => {
-      if (err) {
-        return cb(err);
+    return this.manager.deleteAllSecrets(false, (deleteErr) => {
+      if (deleteErr) {
+        return cb({
+          code: CODE_DELETE_SECRET_ERROR,
+          message: 'There was an error while deleting all existing secrets. Try again?',
+        });
       }
 
-      return this.manager.setEncVerify(encryptVerify, cb);
+      return this.manager.setEncVerify(encryptVerify, (setVerifyErr) => {
+        if (setVerifyErr) {
+          return cb({
+            code: CODE_CHANGE_PASSWORD_ERROR,
+            message: 'An error occurred when trying to update the password. Try again?',
+          });
+        }
+
+        return cb();
+      });
     });
   }
 }

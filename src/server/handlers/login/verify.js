@@ -6,10 +6,7 @@ import {
   DEFAULT_SESSION_EXPIRY_INTERVAL,
   DEFAULT_SESSION_COOKIE_NAME,
 } from 'server/middleware/auth';
-import {
-  CODE_MASTER_DECRYPTION_PASSWORD_INCORRECT,
-  CODE_SESSION_ERROR,
-} from 'shared/constants/error';
+import { CODE_SESSION_ERROR } from 'shared/constants/error';
 
 const {
   SESSION_EXPIRY_INTERVAL = DEFAULT_SESSION_EXPIRY_INTERVAL,
@@ -36,11 +33,7 @@ export default class LoginVerifyHandler extends BaseHandler {
 
     return auth.verify(password, (verifyErr) => {
       if (verifyErr) {
-        return this.error({
-          status: 401,
-          code: CODE_MASTER_DECRYPTION_PASSWORD_INCORRECT,
-          message: 'The specified master password is incorrect.',
-        });
+        return this.error(verifyErr);
       }
 
       return createSession(password, (sessionErr, sid) => {
