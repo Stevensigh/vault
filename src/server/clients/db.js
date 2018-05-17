@@ -27,4 +27,8 @@ export default class DBClient {
   exec(...args) {
     return this.conn.query(...args);
   }
+
+  close() {
+    return this.conn.end();
+  }
 }
