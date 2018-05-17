@@ -34,6 +34,14 @@ export default class AuthLogic extends BaseLogic {
   setVerification(password, cb) {
     const encryptVerify = this.ctx.crypto.encrypt(VERIFY_KEY, password);
 
-    return this.manager.setEncVerify(encryptVerify, cb);
+    // Changing the master password invalidates all previous passwords.
+    // Wipe all user-created secrets.
+    return this.manager.deleteAllSecrets(false, (err) => {
+      if (err) {
+        return cb(err);
+      }
+
+      return this.manager.setEncVerify(encryptVerify, cb);
+    });
   }
 }
