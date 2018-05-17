@@ -111,7 +111,7 @@ export default class SecretsManager extends BaseManager {
   }
 
   /**
-   * Delete a secret by ID.
+   * Delete an unprotected secret by ID.
    *
    * @param {Number} id ID of the secret to delete.
    * @param {Function} cb Callback invoked with (err).
@@ -119,10 +119,10 @@ export default class SecretsManager extends BaseManager {
   deleteSecret(id, cb) {
     const sql = `
       DELETE FROM secret
-      WHERE id = ?
+      WHERE id = ? AND protected = ?
     `;
 
-    const values = [id];
+    const values = [id, false];
 
     return this.ctx.db.exec(sql, values, cb);
   }

@@ -38,6 +38,25 @@ export default class SecretsLogic extends BaseLogic {
   }
 
   /**
+   * Delete a specific secret by ID.
+   *
+   * @param {Number} id ID of the unprotected secret to delete.
+   * @param {Function} cb Callback invoked on completion.
+   */
+  deleteSecretByID(id, cb) {
+    return this.manager.deleteSecret(id, (err) => {
+      if (err) {
+        return cb({
+          code: CODE_DELETE_SECRET_ERROR,
+          message: 'There was an undefined error when trying to delete a single secret by ID.',
+        });
+      }
+
+      return cb();
+    });
+  }
+
+  /**
    * Delete all known unprotected secrets.
    *
    * @param {Function} cb Callback invoked on completion.
