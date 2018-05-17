@@ -25,5 +25,8 @@ export const CODE_SECRET_DECRYPT_ERROR = 8;
 // Generic database error when attempting to write secrets.
 export const CODE_WRITE_SECRET_ERROR = 9;
 
+// A secret with this name already exists.
+export const CODE_DUPLICATE_SECRET_ERROR = 10;
+
 // Generic database error when attempting to delete secrets.
-export const CODE_DELETE_SECRET_ERROR = 10;
+export const CODE_DELETE_SECRET_ERROR = 11;

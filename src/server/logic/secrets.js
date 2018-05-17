@@ -5,6 +5,7 @@ import {
   CODE_READ_SECRET_ERROR,
   CODE_SECRET_DECRYPT_ERROR,
   CODE_WRITE_SECRET_ERROR,
+  CODE_DUPLICATE_SECRET_ERROR,
   CODE_DELETE_SECRET_ERROR,
 } from 'shared/constants/error';
 
@@ -25,12 +26,20 @@ export default class SecretsLogic extends BaseLogic {
   addSecret(details, password, cb) {
     const encrypted = this.ctx.crypto.encrypt(details.secret, password);
 
+    const errors = {
+      ER_DUP_ENTRY: {
+        code: CODE_DUPLICATE_SECRET_ERROR,
+        message: 'A secret with this name already exists.',
+      },
+      default: {
+        code: CODE_WRITE_SECRET_ERROR,
+        message: 'There was an undefined error when trying to write a new secret.',
+      },
+    };
+
     return this.manager.addSecret({ ...details, secret: encrypted }, (err) => {
       if (err) {
-        return cb({
-          code: CODE_WRITE_SECRET_ERROR,
-          message: 'There was an undefined error when trying to write a new secret.',
-        });
+        return cb(errors[err.code] || errors.default);
       }
 
       return cb();
@@ -108,7 +117,13 @@ export default class SecretsLogic extends BaseLogic {
         });
       }
 
-      return cb(null, { ...details, secret: decrypted });
+      return cb(null, {
+        name: details.name,
+        identity: details.identity,
+        link: details.link,
+        timestamp: details.timestamp,
+        secret: decrypted,
+      });
     });
   }
 
@@ -128,7 +143,8 @@ export default class SecretsLogic extends BaseLogic {
       }
 
       const formatted = results
-        .map(({ id, name, identity, link }) => ({ id, name, identity, link }));
+        .map(({ id, name, identity, link, timestamp }) =>
+          ({ id, name, identity, link, timestamp }));
 
       return cb(null, formatted);
     });
