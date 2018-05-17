@@ -1,7 +1,6 @@
 import BaseLogic from 'server/logic/base';
 import SecretsManager from 'server/managers/secrets';
-
-export const VERIFY_PLAIN_TEXT = '_vault_verify';
+import { VERIFY_KEY } from 'server/constants/auth';
 
 export default class AuthLogic extends BaseLogic {
   constructor(ctx) {
@@ -10,6 +9,12 @@ export default class AuthLogic extends BaseLogic {
     this.manager = new SecretsManager(ctx);
   }
 
+  /**
+   * Verify that the supplied master password is correct.
+   *
+   * @param {String} password Plain-text password supplied by the client.
+   * @param {Function} cb Function invoked with an error if the verification fails.
+   */
   verify(password, cb) {
     return this.manager.getEncVerify((err, secret) => {
       if (err) {
@@ -18,7 +23,7 @@ export default class AuthLogic extends BaseLogic {
 
       const decryptVerify = this.ctx.crypto.decrypt(secret, password);
 
-      if (decryptVerify !== VERIFY_PLAIN_TEXT) {
+      if (decryptVerify !== VERIFY_KEY) {
         return cb(new Error('Failed to verify password.'));
       }
 
@@ -27,7 +32,7 @@ export default class AuthLogic extends BaseLogic {
   }
 
   setVerification(password, cb) {
-    const encryptVerify = this.ctx.crypto.encrypt(VERIFY_PLAIN_TEXT, password);
+    const encryptVerify = this.ctx.crypto.encrypt(VERIFY_KEY, password);
 
     return this.manager.setEncVerify(encryptVerify, cb);
   }
