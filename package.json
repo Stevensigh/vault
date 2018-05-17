@@ -18,7 +18,8 @@
     "test:watch": "npm run test -- --watch",
     "cover": "npm run test -- --coverage",
     "coveralls": "npm run cover && cat coverage/lcov.info | coveralls",
-    "postinstall": "node src/server/scripts/generate-salt.js"
+    "postinstall": "node src/server/scripts/generate-salt.js",
+    "vault:set-master-password": "node -r dotenv/config -r babel-core/register -r babel-polyfill src/server/scripts/set-master-password.js"
   },
   "repository": {
     "type": "git",
@@ -34,8 +35,9 @@
     "cookie-parser": "^1.4.3",
     "copy-text-to-clipboard": "^1.0.4",
     "dotenv": "^5.0.1",
-    "express": "^4.16.2",
+    "express": "^4.16.3",
     "fast-levenshtein": "^2.0.6",
+    "inquirer": "^5.2.0",
     "mysql": "^2.15.0",
     "prop-types": "^15.6.1",
     "raven": "^2.4.2",
