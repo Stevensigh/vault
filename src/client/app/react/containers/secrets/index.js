@@ -6,7 +6,7 @@ import { colors, Spacing, Spinner } from 'react-elemental';
 import levenshtein from 'fast-levenshtein';
 import { withResource } from 'supercharged/client';
 import Secret from 'client/app/react/components/secrets/secret';
-import AddSecretModalContainer from 'client/app/react/containers/secrets/modal/add-secret';
+import AddSecretModalContainer from 'client/app/react/containers/secrets/add-secret-modal';
 import SecretsMeta from 'client/app/react/components/secrets/meta';
 import Box from 'client/app/react/components/ui/box';
 import Delayed from 'client/app/react/components/ui/delayed';

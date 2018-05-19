@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withResource } from 'supercharged/client';
-import DeleteSecretModal from 'client/app/react/components/secrets/modal/delete-secret';
+import DeleteSecretModal from 'client/app/react/components/secrets/detail/delete-secret-modal';
 import ErrorAlert from 'client/app/react/components/ui/alert/error';
 
 /**

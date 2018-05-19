@@ -7,7 +7,7 @@ import { colors, Spacing, Spinner } from 'react-elemental';
 import { withResource } from 'supercharged/client';
 import SecretDetail from 'client/app/react/components/secrets/detail';
 import SecretValueModal from 'client/app/react/components/secrets/detail/value-modal';
-import DeleteSecretModalContainer from 'client/app/react/containers/secrets/modal/delete-secret';
+import DeleteSecretModalContainer from 'client/app/react/containers/secrets/detail/delete-secret-modal';
 import BackNav from 'client/app/react/components/ui/back-nav';
 import Delayed from 'client/app/react/components/ui/delayed';
 import ErrorAlert from 'client/app/react/components/ui/alert/error';

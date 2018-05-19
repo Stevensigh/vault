@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Alert } from 'react-elemental';
 import { withResource } from 'supercharged/client';
-import AddSecretModal from 'client/app/react/components/secrets/modal/add-secret';
+import AddSecretModal from 'client/app/react/components/secrets/add-secret-modal';
 
 class AddSecretModalContainer extends Component {
   static propTypes = {
