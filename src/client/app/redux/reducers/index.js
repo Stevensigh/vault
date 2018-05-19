@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import authReducer from 'client/app/redux/reducers/auth';
+import toastReducer from 'client/app/redux/reducers/toast';
 
 const reducer = combineReducers({
-  auth: authReducer,
+  toast: toastReducer,
 });
 
 export default reducer;
