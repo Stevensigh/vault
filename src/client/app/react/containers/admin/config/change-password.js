@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { compose } from 'redux';
+import { withRouter } from 'react-router';
 import { colors } from 'react-elemental';
 import KeyboardArrowRight from 'react-icons/lib/md/keyboard-arrow-right';
 import ChangePasswordModalContainer from 'client/app/react/containers/admin/modal/change-password';
 import ConfigItem from 'client/app/react/components/admin/config-item';
 import withToast from 'client/app/react/hoc/with-toast';
 import withToggleState from 'client/app/react/hoc/with-toggle-state';
+import { CODE_SESSION_EXPIRED } from 'shared/constants/error';
 
 /**
  * Admin configuration item for changing the master password.
@@ -24,11 +26,15 @@ class ChangePasswordConfigContainer extends Component {
   };
 
   handleSuccess = () => {
-    const { hideModal, toast } = this.props;
+    const { hideModal, history, toast } = this.props;
 
     hideModal();
-    toast.success('Successfully updated the master password.');
+    toast.success(
+      'Successfully updated the master password. You will need to re-authenticate this session.',
+    );
     toast.warn('All your existing secrets have been deleted.');
+
+    history.push('/login', { code: CODE_SESSION_EXPIRED });
   };
 
   render() {
@@ -60,6 +66,7 @@ class ChangePasswordConfigContainer extends Component {
 }
 
 export default compose(
+  withRouter,
   withToast,
   withToggleState({
     key: 'isVisible',

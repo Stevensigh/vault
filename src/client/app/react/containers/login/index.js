@@ -131,7 +131,7 @@ export default compose(
   withResource({
     key: 'loginVerify',
     method: 'POST',
-    endpoint: '/api/auth/verify',
+    endpoint: '/api/auth/status',
     invokeOnMount: false,
   }),
 )(Login);
