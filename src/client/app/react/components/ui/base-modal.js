@@ -36,56 +36,58 @@ const BaseModal = ({
       </Delayed>
     )}
 
-    <Spacing
-      size="44px"
-      style={{ display: 'flex', flexDirection: 'column' }}
-      top
-      right
-      bottom
-      left
-      padding
-    >
-      {alert && (
-        <Spacing size="large" bottom>
-          {alert}
-        </Spacing>
-      )}
+    <form>
+      <Spacing
+        size="44px"
+        style={{ display: 'flex', flexDirection: 'column' }}
+        top
+        right
+        bottom
+        left
+        padding
+      >
+        {alert && (
+          <Spacing size="large" bottom>
+            {alert}
+          </Spacing>
+        )}
 
-      <Spacing size="large" bottom>
-        <Text color="gray10" size="30px" bold>
-          {title}
-        </Text>
+        <Spacing size="large" bottom>
+          <Text color="gray10" size="30px" bold>
+            {title}
+          </Text>
+        </Spacing>
+
+        {body}
       </Spacing>
 
-      {body}
-    </Spacing>
+      <Spacing
+        size="large"
+        style={{
+          alignItems: 'center',
+          backgroundColor: 'rgb(27, 27, 27)',
+          display: 'flex',
+          justifyContent: 'flex-end',
+        }}
+        top
+        right
+        bottom
+        left
+        padding
+      >
+        {onHide && (
+          <Spacing size="small" right>
+            <Button type="button" style={{ backgroundColor: 'transparent' }} onClick={onHide}>
+              <Text color="gray30" size="kilo" uppercase bold>
+                Cancel
+              </Text>
+            </Button>
+          </Spacing>
+        )}
 
-    <Spacing
-      size="large"
-      style={{
-        alignItems: 'center',
-        backgroundColor: 'rgb(27, 27, 27)',
-        display: 'flex',
-        justifyContent: 'flex-end',
-      }}
-      top
-      right
-      bottom
-      left
-      padding
-    >
-      {onHide && (
-        <Spacing size="small" right>
-          <Button style={{ backgroundColor: 'transparent' }} onClick={onHide}>
-            <Text color="gray30" size="kilo" uppercase bold>
-              Cancel
-            </Text>
-          </Button>
-        </Spacing>
-      )}
-
-      {submit}
-    </Spacing>
+        {submit}
+      </Spacing>
+    </form>
   </Modal>
 );
 

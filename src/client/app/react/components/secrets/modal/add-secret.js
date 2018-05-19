@@ -116,6 +116,7 @@ class AddSecretModal extends Component {
         }
         submit={
           <Button
+            type="submit"
             text="Add"
             disabled={isLoading || !!nameErr || !!linkErr || !!secretErr}
             onClick={this.handleSubmit}

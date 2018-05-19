@@ -27,6 +27,7 @@ const DeleteSecretModal = ({ name, alert, isLoading, onHide, onSubmit }) => (
     }
     submit={
       <Button
+        type="submit"
         text="Delete"
         color={colors.red}
         disabled={isLoading}
