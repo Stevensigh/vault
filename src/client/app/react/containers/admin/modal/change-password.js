@@ -48,6 +48,6 @@ class ChangePasswordModalContainer extends Component {
 export default withResource({
   key: 'password',
   method: 'PUT',
-  endpoint: '/api/login/password',
+  endpoint: '/api/auth/password',
   invokeOnMount: false,
 })(ChangePasswordModalContainer);

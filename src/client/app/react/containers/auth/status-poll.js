@@ -63,7 +63,7 @@ export default compose(
   withResource({
     key: 'auth',
     method: 'GET',
-    endpoint: '/api/login/status',
+    endpoint: '/api/auth/status',
     invokeOnMount: false,
   }),
   withError(({ auth: { err } }) => {

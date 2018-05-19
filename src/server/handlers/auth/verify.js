@@ -13,8 +13,8 @@ const {
   SESSION_COOKIE_NAME = DEFAULT_SESSION_COOKIE_NAME,
 } = process.env;
 
-@route('/api/login/verify')
-export default class LoginVerifyHandler extends BaseHandler {
+@route('/api/auth/verify')
+export default class AuthVerifyHandler extends BaseHandler {
   /**
    * Verify the master password and generate an in-memory session, communicated via a cookie, if the
    * password is valid.

@@ -7,8 +7,8 @@ const {
   SESSION_COOKIE_NAME = DEFAULT_SESSION_COOKIE_NAME,
 } = process.env;
 
-@route('/api/login/password')
-export default class LoginPasswordHandler extends BaseHandler {
+@route('/api/auth/password')
+export default class AuthPasswordHandler extends BaseHandler {
   /**
    * Change the master password.
    */

@@ -83,5 +83,5 @@ class AuthContainer extends Component {
 export default withResource({
   key: 'auth',
   method: 'GET',
-  endpoint: '/api/login/status',
+  endpoint: '/api/auth/status',
 })(AuthContainer);
