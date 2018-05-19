@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Alert } from 'react-elemental';
 import { withResource } from 'supercharged/client';
 import ChangePasswordModal from 'client/app/react/components/admin/modal/change-password';
+import ErrorAlert from 'client/app/react/components/ui/alert/error';
 
 /**
  * Resource wrapper for the master decryption password change modal.
@@ -13,49 +13,32 @@ class ChangePasswordModalContainer extends Component {
       err: PropTypes.object,
       invoke: PropTypes.func.isRequired,
     }).isRequired,
-    onHide: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired,
+    onSuccess: PropTypes.func.isRequired,
   };
 
-  handleSubmit = (evt, password) => {
+  handleSubmit = (evt, updatedPassword) => {
+    const { password, onSuccess } = this.props;
+
     evt.preventDefault();
 
-    this.props.password.invoke({ password });
+    password.invoke({ password: updatedPassword }, (err) => !err && onSuccess());
   };
 
   render() {
-    const { onHide, password: { isLoaded, err, data } } = this.props;
+    const { password: { isLoaded, err }, onCancel } = this.props;
 
-    const alert = (() => {
-      if (err) {
-        return (
-          <Alert
-            type="error"
+    return (
+      <ChangePasswordModal
+        alert={err && (
+          <ErrorAlert
             size="beta"
             title="Error"
             message={err.message}
           />
-        );
-      }
-
-      if (data) {
-        return (
-          <Alert
-            type="success"
-            size="beta"
-            title="Success"
-            message="The master decryption password has been successfully updated."
-          />
-        );
-      }
-
-      return null;
-    })();
-
-    return (
-      <ChangePasswordModal
-        alert={alert}
+        )}
         isLoading={!isLoaded}
-        onHide={onHide}
+        onHide={onCancel}
         onSubmit={this.handleSubmit}
       />
     );

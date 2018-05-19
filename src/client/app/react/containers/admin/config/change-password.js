@@ -1,42 +1,69 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { compose } from 'redux';
 import { colors } from 'react-elemental';
 import KeyboardArrowRight from 'react-icons/lib/md/keyboard-arrow-right';
 import ChangePasswordModalContainer from 'client/app/react/containers/admin/modal/change-password';
 import ConfigItem from 'client/app/react/components/admin/config-item';
+import withToast from 'client/app/react/hoc/with-toast';
 import withToggleState from 'client/app/react/hoc/with-toggle-state';
 
 /**
- * Admin configuration item for deleting all secrets.
+ * Admin configuration item for changing the master password.
  */
-const ChangePasswordConfigContainer = ({ isVisible, showModal, hideModal }) => (
-  <div>
-    <div style={{ cursor: 'pointer' }} onClick={showModal} tabIndex={0}>
-      <ConfigItem
-        title="Change master decryption password"
-        text={
-          'Update the key used for encrypting and decrypting all of Vault\'s secrets. ' +
-          'You will need to re-add all existing secrets.'
-        }
-      >
-        <KeyboardArrowRight style={{ color: colors.gray40 }} />
-      </ConfigItem>
-    </div>
+class ChangePasswordConfigContainer extends Component {
+  static propTypes = {
+    toast: PropTypes.shape({
+      success: PropTypes.func.isRequired,
+      warn: PropTypes.func.isRequired,
+      error: PropTypes.func.isRequired,
+    }).isRequired,
+    isVisible: PropTypes.bool.isRequired,
+    showModal: PropTypes.func.isRequired,
+    hideModal: PropTypes.func.isRequired,
+  };
 
-    {isVisible && (
-      <ChangePasswordModalContainer onHide={hideModal} />
-    )}
-  </div>
-);
+  handleSuccess = () => {
+    const { hideModal, toast } = this.props;
 
-ChangePasswordConfigContainer.propTypes = {
-  isVisible: PropTypes.bool.isRequired,
-  showModal: PropTypes.func.isRequired,
-  hideModal: PropTypes.func.isRequired,
-};
+    hideModal();
+    toast.success('Successfully updated the master password.');
+    toast.warn('All your existing secrets have been deleted.');
+  };
 
-export default withToggleState({
-  key: 'isVisible',
-  enable: 'showModal',
-  disable: 'hideModal',
-})(ChangePasswordConfigContainer);
+  render() {
+    const { isVisible, showModal, hideModal } = this.props;
+
+    return (
+      <div>
+        <div style={{ cursor: 'pointer' }} onClick={showModal} tabIndex={0}>
+          <ConfigItem
+            title="Change master decryption password"
+            text={
+              'Update the key used for encrypting and decrypting all of Vault\'s secrets. ' +
+              'You will need to re-add all existing secrets.'
+            }
+          >
+            <KeyboardArrowRight style={{ color: colors.gray40 }} />
+          </ConfigItem>
+        </div>
+
+        {isVisible && (
+          <ChangePasswordModalContainer
+            onCancel={hideModal}
+            onSuccess={this.handleSuccess}
+          />
+        )}
+      </div>
+    );
+  }
+}
+
+export default compose(
+  withToast,
+  withToggleState({
+    key: 'isVisible',
+    enable: 'showModal',
+    disable: 'hideModal',
+  }),
+)(ChangePasswordConfigContainer);
