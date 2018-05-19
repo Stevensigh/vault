@@ -61,10 +61,13 @@ class SecretsContainer extends Component {
       isAddModalVisible,
     } = this.props;
 
-    // Only display secrets that match the specified search term.
-    const displaySecrets = data.filter(({ name }) => !search ||
-      name.toLowerCase().indexOf(search.toLowerCase()) !== -1 ||
-      levenshtein.get(search.toLowerCase(), name.toLowerCase()) <= 3);
+    // Only display secrets that match the specified search term, and sort alphabetically.
+    const displaySecrets = data
+      .filter(({ name }) =>
+        !search ||
+        name.toLowerCase().indexOf(search.toLowerCase()) !== -1 ||
+        levenshtein.get(search.toLowerCase(), name.toLowerCase()) <= 3)
+      .sort((a, b) => a.name.localeCompare(b.name));
 
     return (
       <div>
