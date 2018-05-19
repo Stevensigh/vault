@@ -3,6 +3,7 @@
 const dotenv = require('dotenv');
 const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const path = require('path');
 const webpack = require('webpack');
 
@@ -18,6 +19,7 @@ const BUILD_ENV_VARS = [
 const isProduction = process.env.NODE_ENV === 'production';
 
 module.exports = {
+  mode: isProduction ? 'production' : 'development',
   entry: {
     main: './src/client',
   },
@@ -39,6 +41,20 @@ module.exports = {
       },
     ],
   },
+  optimization: {
+    minimizer: [
+      new UglifyJSPlugin({
+        uglifyOptions: {
+          output: {
+            comments: false,
+          },
+        },
+      }),
+    ],
+  },
+  performance: {
+    hints: false,
+  },
   plugins: [
     new webpack.ProgressPlugin(),
     new webpack.DefinePlugin({
@@ -56,10 +72,6 @@ module.exports = {
     new HtmlWebpackInlineSourcePlugin(),
     isProduction && new webpack.LoaderOptionsPlugin({
       minimize: true,
-    }),
-    isProduction && new webpack.optimize.UglifyJsPlugin({
-      comments: false,
-      parallel: true,
     }),
   ].filter(Boolean),
   devServer: {
