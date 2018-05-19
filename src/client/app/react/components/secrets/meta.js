@@ -12,7 +12,7 @@ const SecretsMeta = ({ numSecrets, onAddClick }) => (
         {numSecrets}
       </Text>
       <Text color="gray60" inline>
-        &nbsp;matching secrets
+        &nbsp;matching secret{numSecrets === 1 ? '' : 's'}
       </Text>
     </div>
 

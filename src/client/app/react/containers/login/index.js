@@ -43,7 +43,6 @@ class Login extends Component {
     const {
       loginVerify,
       form: { password },
-      actions,
       history,
     } = this.props;
 

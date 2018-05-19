@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Alert } from 'react-elemental';
 import { withResource } from 'supercharged/client';
 import DeleteSecretModal from 'client/app/react/components/secrets/modal/delete-secret';
+import ErrorAlert from 'client/app/react/components/ui/alert/error';
+import SuccessAlert from 'client/app/react/components/ui/alert/success';
 
 /**
  * Resource wrapper for deleting a specific secret by name.
@@ -29,8 +30,7 @@ class DeleteSecretModalContainer extends Component {
     const alert = (() => {
       if (err) {
         return (
-          <Alert
-            type="error"
+          <ErrorAlert
             size="beta"
             title="Error"
             message={err.message}
@@ -40,8 +40,7 @@ class DeleteSecretModalContainer extends Component {
 
       if (data) {
         return (
-          <Alert
-            type="success"
+          <SuccessAlert
             size="beta"
             title="Success"
             message="The secret has been deleted."
@@ -69,6 +68,6 @@ export default withResource({
   key: 'deleteSecret',
   method: 'DELETE',
   endpoint: '/api/secrets',
-  data: ({ name }) => ({ name }),
+  data: ({ id }) => ({ id }),
   invokeOnMount: false,
 })(DeleteSecretModalContainer);

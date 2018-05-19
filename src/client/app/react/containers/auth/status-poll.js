@@ -6,6 +6,7 @@ import LoginModal from 'client/app/react/components/auth/login-modal';
 import withError from 'client/app/react/hoc/with-error';
 import { CODE_SESSION_UNAUTHENTICATED, CODE_SESSION_EXPIRED } from 'shared/constants/error';
 
+// Number of milliseconds between each authentication status poll request.
 const POLL_INTERVAL = 10000;
 
 /**
