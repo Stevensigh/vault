@@ -9,7 +9,14 @@ import React, { Component } from 'react';
  */
 const withDimensions = (WrappedComponent) =>
   class WithDimensionsHOC extends Component {
-    state = { width: undefined, height: undefined };
+    state = {
+      width: undefined,
+      height: undefined,
+      window: {
+        width: undefined,
+        height: undefined,
+      },
+    };
 
     componentDidMount() {
       window.addEventListener('resize', this.onResize);
@@ -22,27 +29,33 @@ const withDimensions = (WrappedComponent) =>
     }
 
     onResize = () => {
-      const { clientWidth, clientHeight } = this.ref || {};
+      const { clientWidth, clientHeight } = this.ref.current || {};
 
-      this.setState({ width: clientWidth, height: clientHeight });
+      this.setState({
+        width: clientWidth,
+        height: clientHeight,
+        window: {
+          width: window.innerWidth,
+          height: window.innerHeight,
+        },
+      });
     };
 
-    setRef = (ref) => {
-      this.ref = ref;
-    };
+    ref = React.createRef();
 
     render() {
-      const { width, height } = this.state;
+      const { width, height, window } = this.state;
 
       const containerStyle = { width: '100%', height: '100%' };
       const isDimensionDefined = (width !== undefined) && (height !== undefined);
 
       return (
-        <div ref={this.setRef} style={containerStyle}>
+        <div ref={this.ref} style={containerStyle}>
           {isDimensionDefined && (
             <WrappedComponent
               width={width}
               height={height}
+              window={window}
               {...this.props}
             />
           )}
