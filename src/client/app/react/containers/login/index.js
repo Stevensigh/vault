@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { compose } from 'redux';
 import { LoadingBar, Spacing } from 'react-elemental';
+import { Helmet } from 'react-helmet';
 import { withResource } from 'supercharged/client';
 import Container from 'client/app/react/components/ui/container';
 import Footer from 'client/app/react/components/login/footer';
@@ -9,14 +10,18 @@ import PasswordField from 'client/app/react/components/login/password-field';
 import Logo from 'client/app/react/components/ui/logo';
 import Delayed from 'client/app/react/components/ui/delayed';
 import WarnAlert from 'client/app/react/components/ui/alert/warn';
+import withDimensions from 'client/app/react/hoc/with-dimensions';
 import withForm from 'client/app/react/hoc/with-form';
 import withError from 'client/app/react/hoc/with-error';
 import { CODE_SESSION_UNAUTHENTICATED, CODE_SESSION_EXPIRED } from 'shared/constants/error';
 
+// Number of pixels in height before which the compact layout should be used.
+const COMPACT_THRESHOLD_HEIGHT = 600;
+
 /**
  * Top-level container for the login (master password) view.
  */
-class Login extends Component {
+class LoginContainer extends Component {
   static propTypes = {
     loginVerify: PropTypes.shape({
       err: PropTypes.object,
@@ -31,6 +36,9 @@ class Login extends Component {
       push: PropTypes.func.isRequired,
     }).isRequired,
     error: PropTypes.string,
+    window: PropTypes.shape({
+      height: PropTypes.number.isRequired,
+    }).isRequired,
   };
 
   static defaultProps = {
@@ -59,10 +67,17 @@ class Login extends Component {
       handleChange,
       form: { password = '' },
       error,
+      window: { height },
     } = this.props;
+
+    const isCompact = height <= COMPACT_THRESHOLD_HEIGHT;
 
     return (
       <div>
+        <Helmet>
+          <title>Login - Vault</title>
+        </Helmet>
+
         {!loginVerify.isLoaded && (
           <Delayed>
             <LoadingBar style={{ position: 'absolute' }} />
@@ -95,8 +110,13 @@ class Login extends Component {
                 justifyContent: 'center',
               }}
             >
-              <Spacing size="enormous" bottom>
-                <Logo style={{ fill: 'white', width: '200px' }} />
+              <Spacing size={isCompact ? 'huge' : 'enormous'} bottom>
+                <Logo
+                  style={{
+                    fill: 'white',
+                    width: isCompact ? '150px' : '200px',
+                  }}
+                />
               </Spacing>
 
               <PasswordField
@@ -105,10 +125,13 @@ class Login extends Component {
                 onSubmit={this.handleLoginSubmit}
                 error={loginVerify.err && loginVerify.err.message}
                 disabled={!loginVerify.isLoaded}
+                isCompact={isCompact}
               />
             </div>
 
-            <Footer />
+            {!isCompact && (
+              <Footer />
+            )}
           </div>
         </Container>
       </div>
@@ -117,6 +140,7 @@ class Login extends Component {
 }
 
 export default compose(
+  withDimensions,
   withForm,
   withError(({ location: { state: { code } = {} } }) => {
     switch (code) {
@@ -134,4 +158,4 @@ export default compose(
     endpoint: '/api/auth/status',
     invokeOnMount: false,
   }),
-)(Login);
+)(LoginContainer);

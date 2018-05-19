@@ -13,10 +13,17 @@ import LongArrowRight from 'client/app/react/components/ui/icon/long-arrow-right
 /**
  * Field for entering the master decryption password.
  */
-const PasswordField = ({ value, error, disabled, onChange, onSubmit }) => (
+const PasswordField = ({
+  value,
+  error,
+  disabled,
+  onChange,
+  onSubmit,
+  isCompact,
+}) => (
   <form style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
     <Spacing size="large" bottom>
-      <Text size="delta" color="gray20">
+      <Text size={isCompact ? sizes.epsilon : sizes.delta} color="gray20">
         Enter the master password to continue.
       </Text>
     </Spacing>
@@ -29,7 +36,7 @@ const PasswordField = ({ value, error, disabled, onChange, onSubmit }) => (
       disabled={disabled}
       style={{
         color: colors.gray10,
-        fontSize: sizes.beta,
+        fontSize: isCompact ? sizes.delta : sizes.beta,
         opacity: disabled ? 0.6 : 1,
       }}
       secondary
@@ -57,6 +64,7 @@ PasswordField.propTypes = {
   disabled: PropTypes.bool.isRequired,
   onChange: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
+  isCompact: PropTypes.bool.isRequired,
 };
 
 PasswordField.defaultProps = {
