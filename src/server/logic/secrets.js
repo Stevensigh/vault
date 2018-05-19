@@ -120,6 +120,7 @@ export default class SecretsLogic extends BaseLogic {
       }
 
       return cb(null, {
+        id: details.id,
         name: details.name,
         identity: details.identity,
         link: details.link,

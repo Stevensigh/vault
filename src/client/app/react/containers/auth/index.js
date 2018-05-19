@@ -7,6 +7,7 @@ import { withResource } from 'supercharged/client';
 import AdminContainer from 'client/app/react/containers/admin';
 import AuthStatusPollContainer from 'client/app/react/containers/auth/status-poll';
 import SecretsContainer from 'client/app/react/containers/secrets';
+import SecretDetailContainer from 'client/app/react/containers/secrets/detail';
 import Header from 'client/app/react/components/header';
 import Container from 'client/app/react/components/ui/container';
 import Splash from 'client/app/react/components/ui/splash';
@@ -52,7 +53,7 @@ class AuthContainer extends Component {
       );
     }
 
-    const { tab } = ROUTE_HEADER_TABS.find(({ route }) => route === path);
+    const { tab } = ROUTE_HEADER_TABS.find(({ route }) => path.startsWith(route));
 
     return (
       <div>
@@ -69,6 +70,7 @@ class AuthContainer extends Component {
           <Switch>
             <Route path="/admin" component={AdminContainer} exact />
             <Route path="/secrets" component={SecretsContainer} exact />
+            <Route path="/secrets/:id" component={SecretDetailContainer} exact />
           </Switch>
         </Container>
 

@@ -1,53 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { colors, Button, Link, Spacing, Text } from 'react-elemental';
+import { colors, Link, Spacing, Text } from 'react-elemental';
 import KeyboardArrowRight from 'react-icons/lib/md/keyboard-arrow-right';
 
 /**
- * Component representing a single secret.
+ * Single secret result entry in the list of all secrets.
  */
-export default class Secret extends Component {
-  static propTypes = {
-    name: PropTypes.string.isRequired,
-    identity: PropTypes.string,
-    value: PropTypes.string,
-    link: PropTypes.string,
-    isCopied: PropTypes.bool.isRequired,
-    isCompact: PropTypes.bool.isRequired,
-    onCopyClick: PropTypes.func.isRequired,
-    onShowClick: PropTypes.func.isRequired,
-    onDeleteClick: PropTypes.func.isRequired,
-  };
-
-  static defaultProps = {
-    identity: null,
-    value: null,
-    link: null,
-  };
-
-  state = { isActionPanelVisible: false };
-
-  handleExpansionClick = (evt) => {
-    evt.preventDefault();
-
-    this.setState(({ isActionPanelVisible }) => ({ isActionPanelVisible: !isActionPanelVisible }));
-  };
-
-  render() {
-    const {
-      name,
-      identity,
-      value,
-      link,
-      isCopied,
-      isCompact,
-      onCopyClick,
-      onShowClick,
-      onDeleteClick,
-    } = this.props;
-    const { isActionPanelVisible } = this.state;
-
-    const secretMeta = (
+const Secret = ({ name, identity, link }) => (
+  <div style={{ alignItems: 'center', display: 'flex', justifyContent: 'space-between' }}>
+    <div>
       <div>
         <Text size="epsilon" color="gray10" bold>
           {name}
@@ -71,104 +32,23 @@ export default class Secret extends Component {
           </Spacing>
         )}
       </div>
-    );
+    </div>
 
-    const actionPanel = (
-      <div style={{ display: 'flex' }}>
-        <Spacing size="small" right>
-          <Button
-            size="gamma"
-            text={isCopied ? 'Copied' : 'Copy'}
-            onClick={onCopyClick}
-            disabled={isCopied}
-            secondary
-          />
-        </Spacing>
+    <Spacing size="tiny" top right left bottom padding>
+      <KeyboardArrowRight style={{ color: colors.gray40 }} />
+    </Spacing>
+  </div>
+);
 
-        <Spacing size="small" right>
-          <Button
-            size="gamma"
-            text={value ? 'Hide' : 'Show'}
-            onClick={onShowClick}
-            secondary
-          />
-        </Spacing>
+Secret.propTypes = {
+  name: PropTypes.string.isRequired,
+  identity: PropTypes.string,
+  link: PropTypes.string,
+};
 
-        <Button
-          size="gamma"
-          color={colors.red}
-          text="Delete"
-          onClick={onDeleteClick}
-          secondary
-        />
-      </div>
-    );
+Secret.defaultProps = {
+  identity: null,
+  link: null,
+};
 
-    return (
-      <div>
-        <Spacing
-          style={{ alignItems: 'center', display: 'flex', justifyContent: 'space-between' }}
-          bottom={!!value}
-        >
-          <div>
-            {isCompact ? (
-              <div style={{ alignItems: 'center', display: 'flex' }}>
-                <div
-                  style={{
-                    marginLeft: isActionPanelVisible ? '-70px' : 0,
-                    opacity: isActionPanelVisible ? 0 : 1,
-                    pointerEvents: isActionPanelVisible ? 'none' : 'inherit',
-                    transition: 'all 0.15s ease',
-                  }}
-                >
-                  {secretMeta}
-                </div>
-                <div
-                  style={{
-                    opacity: isActionPanelVisible ? 1 : 0,
-                    pointerEvents: isActionPanelVisible ? 'inherit' : 'none',
-                    position: 'absolute',
-                    marginLeft: isActionPanelVisible ? 0 : '70px',
-                    transition: 'all 0.15s ease',
-                  }}
-                >
-                  {actionPanel}
-                </div>
-              </div>
-            ) : secretMeta}
-          </div>
-
-          {isCompact ? (
-            <a href="#" onClick={this.handleExpansionClick}>
-              <Spacing size="tiny" top right left bottom padding>
-                <KeyboardArrowRight
-                  style={{
-                    color: colors.gray40,
-                    transform: `rotate(${isActionPanelVisible ? 180 : 0}deg)`,
-                    transition: 'all 0.15s ease',
-                  }}
-                />
-              </Spacing>
-            </a>
-          ) : actionPanel}
-        </Spacing>
-
-        {value && (
-          <Spacing
-            size="small"
-            style={{ backgroundColor: colors.gray10 }}
-            top
-            right
-            bottom
-            left
-            padding
-          >
-            <Text secondary>
-              {value}
-            </Text>
-          </Spacing>
-        )}
-      </div>
-    );
-  }
-}
+export default Secret;

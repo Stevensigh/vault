@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { withResource } from 'supercharged/client';
 import DeleteSecretModal from 'client/app/react/components/secrets/modal/delete-secret';
 import ErrorAlert from 'client/app/react/components/ui/alert/error';
-import SuccessAlert from 'client/app/react/components/ui/alert/success';
 
 /**
  * Resource wrapper for deleting a specific secret by name.
@@ -11,7 +10,8 @@ import SuccessAlert from 'client/app/react/components/ui/alert/success';
 class DeleteSecretModalContainer extends Component {
   static propTypes = {
     name: PropTypes.string.isRequired,
-    onHide: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired,
+    onSuccess: PropTypes.func.isRequired,
     deleteSecret: PropTypes.shape({
       err: PropTypes.object,
       invoke: PropTypes.func.isRequired,
@@ -19,45 +19,28 @@ class DeleteSecretModalContainer extends Component {
   };
 
   handleSubmit = (evt) => {
+    const { deleteSecret, onSuccess } = this.props;
+
     evt.preventDefault();
 
-    this.props.deleteSecret.invoke();
+    deleteSecret.invoke(null, (err) => !err && onSuccess());
   };
 
   render() {
-    const { name, onHide, deleteSecret: { err, isLoaded, data } } = this.props;
+    const { name, onCancel, deleteSecret: { err, isLoaded } } = this.props;
 
-    const alert = (() => {
-      if (err) {
-        return (
+    return (
+      <DeleteSecretModal
+        name={name}
+        alert={err && (
           <ErrorAlert
             size="beta"
             title="Error"
             message={err.message}
           />
-        );
-      }
-
-      if (data) {
-        return (
-          <SuccessAlert
-            size="beta"
-            title="Success"
-            message="The secret has been deleted."
-          />
-        );
-      }
-
-      return null;
-    })();
-
-
-    return (
-      <DeleteSecretModal
-        name={name}
-        alert={alert}
+        )}
         isLoading={!isLoaded}
-        onHide={onHide}
+        onHide={onCancel}
         onSubmit={this.handleSubmit}
       />
     );

@@ -5,13 +5,17 @@ import { Helmet } from 'react-helmet';
 import { colors, Spacing, Spinner } from 'react-elemental';
 import levenshtein from 'fast-levenshtein';
 import { withResource } from 'supercharged/client';
-import SecretContainer from 'client/app/react/containers/secrets/secret';
+import Secret from 'client/app/react/components/secrets/secret';
 import AddSecretModalContainer from 'client/app/react/containers/secrets/modal/add-secret';
 import SecretsMeta from 'client/app/react/components/secrets/meta';
-import SearchField from 'client/app/react/components/ui/search-field';
+import Box from 'client/app/react/components/ui/box';
 import Delayed from 'client/app/react/components/ui/delayed';
+import SearchField from 'client/app/react/components/ui/search-field';
 import withForm from 'client/app/react/hoc/with-form';
 
+/**
+ * Container listing all known secrets.
+ */
 class SecretsContainer extends Component {
   static propTypes = {
     secrets: PropTypes.shape({
@@ -21,6 +25,9 @@ class SecretsContainer extends Component {
     form: PropTypes.shape({
       search: PropTypes.string,
     }).isRequired,
+    history: PropTypes.shape({
+      push: PropTypes.func.isRequired,
+    }).isRequired,
     handleChange: PropTypes.func.isRequired,
   };
 
@@ -28,6 +35,8 @@ class SecretsContainer extends Component {
 
   handleAddModalVisibilityChange = (isVisible) =>
     () => this.setState({ isAddModalVisible: isVisible });
+
+  handleSecretClick = (id) => () => this.props.history.push(`/secrets/${id}`);
 
   render() {
     const {
@@ -71,12 +80,17 @@ class SecretsContainer extends Component {
             </Delayed>
           ) : displaySecrets.map(({ id, name, identity, link }) => (
             <Spacing key={id} bottom>
-              <SecretContainer
-                id={id}
-                name={name}
-                identity={identity}
-                link={link}
-              />
+              <Box
+                style={{ cursor: 'pointer' }}
+                onClick={this.handleSecretClick(id)}
+              >
+                <Secret
+                  id={id}
+                  name={name}
+                  identity={identity}
+                  link={link}
+                />
+              </Box>
             </Spacing>
           ))}
         </div>
