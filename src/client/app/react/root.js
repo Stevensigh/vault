@@ -1,5 +1,6 @@
 import React from 'react';
 import routes from 'client/app/react/routes';
+import ToastsContainer from 'client/app/react/containers/ui/toasts';
 
 /**
  * Application root.
@@ -7,6 +8,8 @@ import routes from 'client/app/react/routes';
 const Root = () => (
   <div>
     {routes}
+
+    <ToastsContainer />
   </div>
 );
 

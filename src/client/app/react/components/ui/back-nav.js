@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link, Text } from 'react-elemental';
+import { colors, Link, Text } from 'react-elemental';
 import KeyboardArrowLeft from 'react-icons/lib/md/keyboard-arrow-left';
 
 /**
@@ -27,7 +27,7 @@ export default class BackNav extends Component {
       <Text color="primary" inline>
         <Link
           type="plain"
-          activeColor="white"
+          activeColor={colors.gray10}
           onMouseEnter={this.handleHoverStateChange(true)}
           onMouseLeave={this.handleHoverStateChange(false)}
           {...this.props}

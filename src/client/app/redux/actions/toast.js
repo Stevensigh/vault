@@ -31,13 +31,21 @@ export const hideToast = (toastID) => ({
  * Generate a limited-duration toast. This allows asynchronous "stacking" of multiple, temporally
  * overlapping toasts.
  *
- * @param {String} text Toast text.
  * @param {String} type One of 'success', 'warn', or 'error' describing the type of toast.
- * @param {Number} duration Number of milliseconds that the toast will be displayed.
- * @return {Function}
+ * @return {Function} Thunk factory that takes parameters text, the toast text, and duration,
+ *                    the number of milliseconds that the toast will be displayed.
  */
-export const toast = (text, type = 'info', duration = DEFAULT_TOAST_DURATION) => (dispatch) => {
+const generateToast = (type) => (text, duration = DEFAULT_TOAST_DURATION) => (dispatch) => {
   const toastID = uuid();
   dispatch(showToast(toastID, text, type));
   setTimeout(() => dispatch(hideToast(toastID)), duration);
+};
+
+/**
+ * Convenience toast generation functions bound to specific variants of toast types.
+ */
+export const toast = {
+  success: generateToast('success'),
+  warn: generateToast('warn'),
+  error: generateToast('error'),
 };
