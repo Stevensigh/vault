@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Alert } from 'react-elemental';
 import { withResource } from 'supercharged/client';
 import DeleteSecretsModal from 'client/app/react/components/admin/modal/delete-secrets';
+import ErrorAlert from 'client/app/react/components/ui/alert/error';
 
 /**
  * Resource wrapper for the delete modal.
@@ -13,49 +13,32 @@ class DeleteSecretsModalContainer extends Component {
       err: PropTypes.object,
       invoke: PropTypes.func.isRequired,
     }).isRequired,
-    onHide: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired,
+    onSuccess: PropTypes.func.isRequired,
   };
 
   handleSubmit = (evt) => {
+    const { deleteSecrets, onSuccess } = this.props;
+
     evt.preventDefault();
 
-    this.props.deleteSecrets.invoke();
+    deleteSecrets.invoke(null, (err) => !err && onSuccess());
   };
 
   render() {
-    const { onHide, deleteSecrets: { isLoaded, err, data } } = this.props;
+    const { deleteSecrets: { isLoaded, err }, onCancel } = this.props;
 
-    const alert = (() => {
-      if (err) {
-        return (
-          <Alert
-            type="error"
+    return (
+      <DeleteSecretsModal
+        alert={err && (
+          <ErrorAlert
             size="beta"
             title="Error"
             message={err.message}
           />
-        );
-      }
-
-      if (data) {
-        return (
-          <Alert
-            type="success"
-            size="beta"
-            title="Success"
-            message="All Vault secrets have been successfully deleted."
-          />
-        );
-      }
-
-      return null;
-    })();
-
-    return (
-      <DeleteSecretsModal
-        alert={alert}
+        )}
         isLoading={!isLoaded}
-        onHide={onHide}
+        onHide={onCancel}
         onSubmit={this.handleSubmit}
       />
     );
