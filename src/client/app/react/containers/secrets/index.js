@@ -13,6 +13,7 @@ import Delayed from 'client/app/react/components/ui/delayed';
 import SearchField from 'client/app/react/components/ui/search-field';
 import withForm from 'client/app/react/hoc/with-form';
 import withToast from 'client/app/react/hoc/with-toast';
+import withToggleState from 'client/app/react/hoc/with-toggle-state';
 
 /**
  * Container listing all known secrets.
@@ -35,21 +36,19 @@ class SecretsContainer extends Component {
       push: PropTypes.func.isRequired,
     }).isRequired,
     handleChange: PropTypes.func.isRequired,
+    isAddModalVisible: PropTypes.bool.isRequired,
+    showAddModal: PropTypes.func.isRequired,
+    hideAddModal: PropTypes.func.isRequired,
   };
-
-  state = { isAddModalVisible: false };
-
-  handleAddModalVisibilityChange = (isVisible) =>
-    () => this.setState({ isAddModalVisible: isVisible });
 
   handleSecretClick = (id) => () => this.props.history.push(`/secrets/${id}`);
 
   handleAddSecretSuccess = ({ name }) => {
-    const { secrets, toast } = this.props;
+    const { hideAddModal, secrets, toast } = this.props;
 
     secrets.invoke();
     toast.success(`Successfully added new secret ${name}.`);
-    this.setState({ isAddModalVisible: false });
+    hideAddModal();
   };
 
   render() {
@@ -57,8 +56,10 @@ class SecretsContainer extends Component {
       secrets: { isLoaded, data = [] },
       form: { search = '' },
       handleChange,
+      hideAddModal,
+      showAddModal,
+      isAddModalVisible,
     } = this.props;
-    const { isAddModalVisible } = this.state;
 
     // Only display secrets that match the specified search term.
     const displaySecrets = data.filter(({ name }) => !search ||
@@ -84,7 +85,7 @@ class SecretsContainer extends Component {
           <Spacing bottom>
             <SecretsMeta
               numSecrets={displaySecrets.length}
-              onAddClick={this.handleAddModalVisibilityChange(true)}
+              onAddClick={showAddModal}
             />
           </Spacing>
 
@@ -111,7 +112,7 @@ class SecretsContainer extends Component {
 
         {isAddModalVisible && (
           <AddSecretModalContainer
-            onCancel={this.handleAddModalVisibilityChange(false)}
+            onCancel={hideAddModal}
             onSuccess={this.handleAddSecretSuccess}
           />
         )}
@@ -123,6 +124,11 @@ class SecretsContainer extends Component {
 export default compose(
   withForm,
   withToast,
+  withToggleState({
+    key: 'isAddModalVisible',
+    enable: 'showAddModal',
+    disable: 'hideAddModal',
+  }),
   withResource({
     key: 'secrets',
     method: 'GET',
