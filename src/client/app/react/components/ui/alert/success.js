@@ -1,5 +1,6 @@
 import React from 'react';
 import { Alert } from 'react-elemental';
+import { SUCCESS_COLOR } from 'client/app/util/constants/color';
 
 /**
  * Vault-stylized success alert.
@@ -7,7 +8,7 @@ import { Alert } from 'react-elemental';
 const SuccessAlert = (props) => (
   <Alert
     type="success"
-    style={{ backgroundColor: 'rgba(60, 86, 62, 0.2)' }}
+    style={{ backgroundColor: SUCCESS_COLOR }}
     {...props}
   />
 );

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Alert } from 'react-elemental';
+import { ERROR_COLOR } from 'client/app/util/constants/color';
 
 /**
  * Vault-stylized error alert.
@@ -7,7 +8,7 @@ import { Alert } from 'react-elemental';
 const ErrorAlert = (props) => (
   <Alert
     type="error"
-    style={{ backgroundColor: 'rgba(167, 78, 78, 0.1)' }}
+    style={{ backgroundColor: ERROR_COLOR }}
     {...props}
   />
 );
