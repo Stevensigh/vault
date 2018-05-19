@@ -13,6 +13,7 @@ import Delayed from 'client/app/react/components/ui/delayed';
 import ErrorAlert from 'client/app/react/components/ui/alert/error';
 import withDimensions from 'client/app/react/hoc/with-dimensions';
 import withToast from 'client/app/react/hoc/with-toast';
+import withToggleState from 'client/app/react/hoc/with-toggle-state';
 
 // Number of pixels before which the layout should be considered compact.
 const COMPACT_THRESHOLD_WIDTH = 600;
@@ -36,19 +37,15 @@ class SecretDetailContainer extends Component {
       data: PropTypes.object,
     }).isRequired,
     width: PropTypes.number.isRequired,
+    isValueModalVisible: PropTypes.bool.isRequired,
+    showValueModal: PropTypes.func.isRequired,
+    hideValueModal: PropTypes.func.isRequired,
+    isDeleteModalVisible: PropTypes.bool.isRequired,
+    showDeleteModal: PropTypes.func.isRequired,
+    hideDeleteModal: PropTypes.func.isRequired,
+    isValueCopied: PropTypes.bool.isRequired,
+    setValueCopied: PropTypes.func.isRequired,
   };
-
-  state = {
-    isValueCopied: false,
-    isValueModalVisible: false,
-    isDeleteModalVisible: false,
-  };
-
-  handleValueModalVisibilityChange = (isVisible) =>
-    () => this.setState({ isValueModalVisible: isVisible });
-
-  handleDeleteModalVisibilityChange = (isVisible) =>
-    () => this.setState({ isDeleteModalVisible: isVisible });
 
   handleDeleteSuccess = () => {
     const { details, history, toast } = this.props;
@@ -58,10 +55,10 @@ class SecretDetailContainer extends Component {
   };
 
   handleCopyClick = () => {
-    const { details, toast } = this.props;
+    const { details, toast, setValueCopied } = this.props;
 
     copy(details.data.secret);
-    this.setState({ isValueCopied: true });
+    setValueCopied();
     toast.success(`Copied secret value for ${details.data.name} to the system clipboard.`);
   };
 
@@ -71,8 +68,17 @@ class SecretDetailContainer extends Component {
   };
 
   render() {
-    const { details: { err, isLoaded, data }, width } = this.props;
-    const { isValueCopied, isValueModalVisible, isDeleteModalVisible } = this.state;
+    const {
+      details: { err, isLoaded, data },
+      width,
+      isValueModalVisible,
+      showValueModal,
+      hideValueModal,
+      isDeleteModalVisible,
+      showDeleteModal,
+      hideDeleteModal,
+      isValueCopied,
+    } = this.props;
 
     const isCompact = width <= COMPACT_THRESHOLD_WIDTH;
 
@@ -103,8 +109,8 @@ class SecretDetailContainer extends Component {
           <SecretDetail
             secret={data}
             onCopyClick={this.handleCopyClick}
-            onShowClick={this.handleValueModalVisibilityChange(true)}
-            onDeleteClick={this.handleDeleteModalVisibilityChange(true)}
+            onShowClick={showValueModal}
+            onDeleteClick={showDeleteModal}
             isValueCopied={isValueCopied}
             isCompact={isCompact}
           />
@@ -126,7 +132,7 @@ class SecretDetailContainer extends Component {
         {isValueModalVisible && (
           <SecretValueModal
             value={data.secret}
-            onHide={this.handleValueModalVisibilityChange(false)}
+            onHide={hideValueModal}
           />
         )}
 
@@ -134,7 +140,7 @@ class SecretDetailContainer extends Component {
           <DeleteSecretModalContainer
             id={data.id}
             name={data.name}
-            onCancel={this.handleDeleteModalVisibilityChange(false)}
+            onCancel={hideDeleteModal}
             onSuccess={this.handleDeleteSuccess}
           />
         )}
@@ -146,6 +152,20 @@ class SecretDetailContainer extends Component {
 export default compose(
   withDimensions,
   withToast,
+  withToggleState({
+    key: 'isValueCopied',
+    enable: 'setValueCopied',
+  }),
+  withToggleState({
+    key: 'isValueModalVisible',
+    enable: 'showValueModal',
+    disable: 'hideValueModal',
+  }),
+  withToggleState({
+    key: 'isDeleteModalVisible',
+    enable: 'showDeleteModal',
+    disable: 'hideDeleteModal',
+  }),
   withResource({
     key: 'details',
     method: 'GET',

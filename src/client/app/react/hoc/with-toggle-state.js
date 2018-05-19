@@ -13,30 +13,31 @@ import React, { Component } from 'react';
  *                      `initial` as a boolean to denote the initial toggle state.
  * @returns {Function} HOC factory that takes a component class to wrap, and returns the HOC itself.
  */
-const withToggleState = ({ key, enable, disable, initial = false }) => (WrappedComponent) =>
-  class WithToggleStateHOC extends Component {
-    state = { isToggled: initial };
+const withToggleState = ({ key, enable = 'enable', disable = 'disable', initial = false }) =>
+  (WrappedComponent) =>
+    class WithToggleStateHOC extends Component {
+      state = { isToggled: initial };
 
-    handleToggle = (isToggled) => () => this.setState({ isToggled });
+      handleToggle = (isToggled) => () => this.setState({ isToggled });
 
-    enable = this.handleToggle(true);
+      enable = this.handleToggle(true);
 
-    disable = this.handleToggle(false);
+      disable = this.handleToggle(false);
 
-    render() {
-      const { isToggled } = this.state;
+      render() {
+        const { isToggled } = this.state;
 
-      const props = {
-        ...this.props,
-        [key]: isToggled,
-        [enable]: this.enable,
-        [disable]: this.disable,
-      };
+        const props = {
+          ...this.props,
+          [key]: isToggled,
+          [enable]: this.enable,
+          [disable]: this.disable,
+        };
 
-      return (
-        <WrappedComponent {...props} />
-      );
-    }
-  };
+        return (
+          <WrappedComponent {...props} />
+        );
+      }
+    };
 
 export default withToggleState;

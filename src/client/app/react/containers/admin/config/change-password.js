@@ -15,6 +15,9 @@ import { CODE_SESSION_EXPIRED } from 'shared/constants/error';
  */
 class ChangePasswordConfigContainer extends Component {
   static propTypes = {
+    history: PropTypes.shape({
+      push: PropTypes.func.isRequired,
+    }).isRequired,
     toast: PropTypes.shape({
       success: PropTypes.func.isRequired,
       warn: PropTypes.func.isRequired,
