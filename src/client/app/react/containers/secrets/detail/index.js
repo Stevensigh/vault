@@ -53,8 +53,8 @@ class SecretDetailContainer extends Component {
   handleDeleteSuccess = () => {
     const { details, history, toast } = this.props;
 
-    history.push('/secrets');
     toast.success(`Successfully deleted secret ${details.data.name}.`);
+    history.push('/secrets');
   };
 
   handleCopyClick = () => {

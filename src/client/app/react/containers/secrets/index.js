@@ -12,12 +12,18 @@ import Box from 'client/app/react/components/ui/box';
 import Delayed from 'client/app/react/components/ui/delayed';
 import SearchField from 'client/app/react/components/ui/search-field';
 import withForm from 'client/app/react/hoc/with-form';
+import withToast from 'client/app/react/hoc/with-toast';
 
 /**
  * Container listing all known secrets.
  */
 class SecretsContainer extends Component {
   static propTypes = {
+    toast: PropTypes.shape({
+      success: PropTypes.func.isRequired,
+      warn: PropTypes.func.isRequired,
+      error: PropTypes.func.isRequired,
+    }).isRequired,
     secrets: PropTypes.shape({
       isLoaded: PropTypes.bool.isRequired,
       data: PropTypes.array,
@@ -37,6 +43,14 @@ class SecretsContainer extends Component {
     () => this.setState({ isAddModalVisible: isVisible });
 
   handleSecretClick = (id) => () => this.props.history.push(`/secrets/${id}`);
+
+  handleAddSecretSuccess = ({ name }) => {
+    const { secrets, toast } = this.props;
+
+    secrets.invoke();
+    toast.success(`Successfully added new secret ${name}.`);
+    this.setState({ isAddModalVisible: false });
+  };
 
   render() {
     const {
@@ -97,7 +111,8 @@ class SecretsContainer extends Component {
 
         {isAddModalVisible && (
           <AddSecretModalContainer
-            onHide={this.handleAddModalVisibilityChange(false)}
+            onCancel={this.handleAddModalVisibilityChange(false)}
+            onSuccess={this.handleAddSecretSuccess}
           />
         )}
       </div>
@@ -107,6 +122,7 @@ class SecretsContainer extends Component {
 
 export default compose(
   withForm,
+  withToast,
   withResource({
     key: 'secrets',
     method: 'GET',
