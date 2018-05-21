@@ -16,7 +16,7 @@ const Box = ({
 }) => (
   <Spacing
     style={{
-      backgroundColor: 'rgb(18, 18, 18)',
+      backgroundColor: 'rgb(22, 22, 22)',
       borderRadius: '3px',
       boxShadow: `4px 4px 10px 0px rgba(0, 0, 0, ${isHover ? 0.17 : 0.1})`,
       boxSizing: 'border-box',
