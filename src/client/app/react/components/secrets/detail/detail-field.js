@@ -1,3 +1,5 @@
+/* eslint-disable react/no-array-index-key */
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Spacing, Text } from 'react-elemental';
@@ -13,11 +15,14 @@ const DetailField = ({ title, text, children }) => (
       </Text>
     </Spacing>
 
-    {text && (
-      <Text size="20px" color="gray20">
-        {text}
-      </Text>
-    )}
+    {text && text.split('\n').map((textLine, idx) => (
+      <React.Fragment key={idx}>
+        <Text size="20px" color="gray20" inline>
+          {textLine}
+        </Text>
+        <br />
+      </React.Fragment>
+    ))}
 
     {children}
   </div>

@@ -6,6 +6,7 @@ import {
   Label,
   Spacing,
   Text,
+  TextArea,
   TextField,
 } from 'react-elemental';
 import url from 'url';
@@ -32,11 +33,11 @@ class AddSecretModal extends Component {
 
   handleSubmit = (evt) => {
     const {
-      form: { name = '', link = '', identity = '', secret = '' },
+      form: { name = '', link = '', identity = '', secret = '', notes = '' },
       onSubmit,
     } = this.props;
 
-    return onSubmit(evt, { name, link, identity, secret });
+    return onSubmit(evt, { name, link, identity, secret, notes });
   };
 
   render() {
@@ -44,7 +45,7 @@ class AddSecretModal extends Component {
       alert,
       isLoading,
       onHide,
-      form: { name = '', link = '', identity = '', secret = '' },
+      form: { name = '', link = '', identity = '', secret = '', notes = '' },
       handleChange,
     } = this.props;
 
@@ -102,14 +103,28 @@ class AddSecretModal extends Component {
               />
             </Spacing>
 
-            <Label label="Secret" />
-            <TextField
-              value={secret}
-              type="password"
-              style={{ color: colors.gray10 }}
-              placeholder="hunter2"
-              onChange={handleChange('secret')}
-              error={secretErr}
+            <Spacing bottom>
+              <Label label="Secret" />
+              <TextField
+                value={secret}
+                type="password"
+                style={{ color: colors.gray10 }}
+                placeholder="hunter2"
+                onChange={handleChange('secret')}
+                error={secretErr}
+                secondary
+              />
+            </Spacing>
+
+            <Label label="Notes (optional)" />
+            <TextArea
+              value={notes}
+              style={{ color: colors.gray10, width: '100%', resize: 'vertical' }}
+              placeholder={
+                'Free-form text to associate with this secret. ' +
+                'Anything you type here is saved in unencrypted cleartext.'
+              }
+              onChange={handleChange('notes')}
               secondary
             />
           </div>

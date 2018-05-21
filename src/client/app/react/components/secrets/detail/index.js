@@ -55,6 +55,15 @@ const SecretDetail = ({
         text={humanize.date('l, F j, Y, g:i:s A', secret.timestamp / 1000)}
       />
     </Spacing>
+
+    {secret.notes && (
+      <Spacing bottom>
+        <DetailField
+          title="Notes"
+          text={secret.notes}
+        />
+      </Spacing>
+    )}
   </div>
 );
 
