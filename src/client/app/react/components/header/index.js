@@ -1,26 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Spacing, Tabs, Text } from 'react-elemental';
+import { Spacing, Tabs } from 'react-elemental';
+import HeaderTab from 'client/app/react/components/header/header-tab';
 import Logo from 'client/app/react/components/ui/logo';
-
-/**
- * Single tab in the header.
- */
-const HeaderTab = ({ isSelected, text }) => (
-  <Spacing top bottom>
-    <Spacing size="small" right left>
-      <Text size="kilo" color={isSelected ? 'gray10' : 'gray25'} bold={isSelected} uppercase>
-        {text}
-      </Text>
-    </Spacing>
-  </Spacing>
-);
-
-HeaderTab.propTypes = {
-  isSelected: PropTypes.bool.isRequired,
-  text: PropTypes.string.isRequired,
-};
 
 /**
  * Global header for navigation.
