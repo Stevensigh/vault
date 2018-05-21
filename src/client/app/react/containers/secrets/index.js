@@ -96,7 +96,7 @@ class SecretsContainer extends Component {
             <Delayed>
               <Spinner ringColor={colors.gray90} style={{ margin: '0 auto' }} />
             </Delayed>
-          ) : displaySecrets.map(({ id, name, identity, link }) => (
+          ) : displaySecrets.map(({ id, name, identity }) => (
             <Spacing key={id} bottom>
               <Box
                 style={{ cursor: 'pointer' }}
@@ -106,7 +106,6 @@ class SecretsContainer extends Component {
                   id={id}
                   name={name}
                   identity={identity}
-                  link={link}
                 />
               </Box>
             </Spacing>
