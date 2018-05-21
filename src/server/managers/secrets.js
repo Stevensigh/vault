@@ -19,11 +19,7 @@ export default class SecretsManager extends BaseManager {
         return cb(err);
       }
 
-      if (!entry) {
-        return cb(new Error('Verification secret does not exist!'));
-      }
-
-      return cb(null, entry.secret);
+      return cb(null, (entry || {}).secret);
     });
   }
 

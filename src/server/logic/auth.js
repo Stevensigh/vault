@@ -3,8 +3,8 @@ import SecretsManager from 'server/managers/secrets';
 import { VERIFY_KEY } from 'server/constants/auth';
 import {
   CODE_MASTER_DECRYPTION_PASSWORD_INCORRECT,
+  CODE_AUTHENTICATION_ERROR,
   CODE_CHANGE_PASSWORD_ERROR,
-  CODE_READ_SECRET_ERROR,
   CODE_DELETE_SECRET_ERROR,
 } from 'shared/constants/error';
 
@@ -25,8 +25,16 @@ export default class AuthLogic extends BaseLogic {
     return this.manager.getEncVerify((err, secret) => {
       if (err) {
         return cb({
-          code: CODE_READ_SECRET_ERROR,
+          code: CODE_AUTHENTICATION_ERROR,
           message: 'An error occurred when reading the master password verification key.',
+        });
+      }
+
+      if (!secret) {
+        return cb({
+          code: CODE_AUTHENTICATION_ERROR,
+          message: 'The master password verification key does not exist. ' +
+            'Vault does not seem to be have been configured on the server yet.',
         });
       }
 
