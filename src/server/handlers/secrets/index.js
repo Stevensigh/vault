@@ -78,16 +78,13 @@ export default class SecretsHandler extends SecretsBaseHandler {
   post({ name, identity = null, link = null, secret, notes = null }, password) {
     const secretDetails = { name, identity, link, secret, notes };
 
-    return this.logic.addSecret(secretDetails, password, (err) => {
+    return this.logic.addSecret(secretDetails, password, (err, entry) => {
       if (err) {
-        return this.error({
-          ...err,
-          data: { name, identity, link },
-        });
+        return this.error(err);
       }
 
       return this.success({
-        data: { name, identity, link },
+        data: entry,
         message: 'The new secret was added successfully.',
       });
     });

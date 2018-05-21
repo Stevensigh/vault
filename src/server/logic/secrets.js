@@ -38,12 +38,18 @@ export default class SecretsLogic extends BaseLogic {
       },
     };
 
-    return this.manager.addSecret({ ...details, secret: encrypted }, (err) => {
+    return this.manager.addSecret({ ...details, secret: encrypted }, (err, addedRow) => {
       if (err) {
         return cb(errors[err.code] || errors.default);
       }
 
-      return cb();
+      return cb(null, {
+        id: addedRow.insertId,
+        name: details.name,
+        identity: details.identity,
+        link: details.link,
+        notes: details.notes,
+      });
     });
   }
 
@@ -126,6 +132,7 @@ export default class SecretsLogic extends BaseLogic {
         link: details.link,
         timestamp: details.timestamp,
         secret: decrypted,
+        notes: details.notes,
       });
     });
   }
