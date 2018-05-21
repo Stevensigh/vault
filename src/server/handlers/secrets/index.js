@@ -68,11 +68,17 @@ export default class SecretsHandler extends SecretsBaseHandler {
         type: 'string',
         minLength: 1,
       },
+      notes: {
+        type: 'string',
+        minLength: 1,
+      },
     },
     required: ['name', 'secret'],
   })
-  post({ name, identity = null, link = null, secret }, password) {
-    return this.logic.addSecret({ name, identity, link, secret }, password, (err) => {
+  post({ name, identity = null, link = null, secret, notes = null }, password) {
+    const secretDetails = { name, identity, link, secret, notes };
+
+    return this.logic.addSecret(secretDetails, password, (err) => {
       if (err) {
         return this.error({
           ...err,

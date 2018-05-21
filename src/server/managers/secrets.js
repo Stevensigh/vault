@@ -95,8 +95,8 @@ export default class SecretsManager extends BaseManager {
    */
   addSecret(details, cb) {
     const sql = `
-      INSERT INTO secret (timestamp, name, identity, link, secret)
-      VALUES (?, ?, ?, ?, ?)
+      INSERT INTO secret (timestamp, name, identity, link, secret, notes)
+      VALUES (?, ?, ?, ?, ?, ?)
     `;
 
     const values = [
@@ -105,6 +105,7 @@ export default class SecretsManager extends BaseManager {
       details.identity || null,
       details.link || null,
       details.secret,
+      details.notes || null,
     ];
 
     return this.ctx.db.exec(sql, values, cb);

@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS secret (
     `identity` TEXT DEFAULT NULL,
     `link` TEXT DEFAULT NULL,
     `secret` TEXT NOT NULL,
+    `notes` TEXT DEFAULT NULL,
     KEY `timestamp_idx` (`timestamp`),
     UNIQUE KEY `name_idx` (`name`),
     PRIMARY KEY (`id`)
