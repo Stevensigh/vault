@@ -20,8 +20,9 @@
     "cover": "npm run test -- --coverage",
     "coveralls": "npm run cover && cat coverage/lcov.info | coveralls",
     "postinstall": "npm run vault:generate-salt",
-    "vault:generate-salt": "node src/server/scripts/generate-salt.js",
-    "vault:set-master-password": "node -r dotenv/config -r babel-core/register -r babel-polyfill src/server/scripts/set-master-password.js"
+    "vault:run-script": "node -r dotenv/config -r babel-core/register -r babel-polyfill",
+    "vault:generate-salt": "npm run vault:run-script -- src/server/scripts/generate-salt.js",
+    "vault:set-master-password": "npm run vault:run-script -- src/server/scripts/set-master-password.js"
   },
   "repository": {
     "type": "git",

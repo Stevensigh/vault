@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 
-const crypto = require('crypto');
-const fs = require('fs');
+import crypto from 'crypto';
+import fs from 'fs';
 
 const { SALT_FILE_PATH = '.salt' } = process.env;
 
