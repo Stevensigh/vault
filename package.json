@@ -4,6 +4,7 @@
   "description": "Secrets and credentials manager",
   "scripts": {
     "clean": "rm -rf dist/",
+    "build": "concurrently --prefix name --prefix-colors cyan.bold,yellow.bold,magenta.bold --names Server,Client,Shared 'npm run build:server' 'npm run build:client' 'npm run build:shared'",
     "build:client": "webpack",
     "build:client:watch": "npm run build:client -- --watch",
     "build:server": "babel src/server -d dist/server",
@@ -13,6 +14,7 @@
     "start:client": "webpack-dev-server --watch --disable-host-check",
     "start:server": "node -r dotenv/config -r babel-core/register src/server",
     "start:server:watch": "nodemon -r dotenv/config -r babel-core/register src/server",
+    "start": "node -r dotenv/config dist/server",
     "dev": "concurrently --kill-others --prefix name --prefix-colors cyan.bold,yellow.bold --names Server,Client 'npm run start:server:watch' 'npm run build:client:watch'",
     "lint": "eslint .",
     "test": "jest",
