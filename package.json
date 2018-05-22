@@ -21,6 +21,7 @@
     "coveralls": "npm run cover && cat coverage/lcov.info | coveralls",
     "postinstall": "npm run vault:generate-salt",
     "vault:run-script": "node -r dotenv/config -r babel-core/register -r babel-polyfill",
+    "vault:init-db": "npm run vault:run-script -- src/server/scripts/init-db.js",
     "vault:generate-salt": "npm run vault:run-script -- src/server/scripts/generate-salt.js",
     "vault:set-master-password": "npm run vault:run-script -- src/server/scripts/set-master-password.js"
   },
