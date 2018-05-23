@@ -1,5 +1,4 @@
 import BaseLogic from 'server/logic/base';
-import SecretsManager from 'server/managers/secrets';
 import { VERIFY_KEY } from 'server/constants/auth';
 import {
   CODE_MASTER_DECRYPTION_PASSWORD_INCORRECT,
@@ -9,12 +8,6 @@ import {
 } from 'shared/constants/error';
 
 export default class AuthLogic extends BaseLogic {
-  constructor(ctx) {
-    super(ctx);
-
-    this.manager = new SecretsManager(ctx);
-  }
-
   /**
    * Verify that the supplied master password is correct.
    *
@@ -22,7 +15,7 @@ export default class AuthLogic extends BaseLogic {
    * @param {Function} cb Function invoked with an error if the verification fails.
    */
   verify(password, cb) {
-    return this.manager.getEncVerify((err, secret) => {
+    return this.ctx.manager.secrets.getEncVerify((err, secret) => {
       if (err) {
         return cb({
           code: CODE_AUTHENTICATION_ERROR,
@@ -57,7 +50,7 @@ export default class AuthLogic extends BaseLogic {
 
     // Changing the master password invalidates all previous passwords.
     // Wipe all user-created secrets.
-    return this.manager.deleteAllSecrets(false, (deleteErr) => {
+    return this.ctx.manager.secrets.deleteAllSecrets(false, (deleteErr) => {
       if (deleteErr) {
         return cb({
           code: CODE_DELETE_SECRET_ERROR,
@@ -65,7 +58,7 @@ export default class AuthLogic extends BaseLogic {
         });
       }
 
-      return this.manager.setEncVerify(encryptVerify, (setVerifyErr) => {
+      return this.ctx.manager.secrets.setEncVerify(encryptVerify, (setVerifyErr) => {
         if (setVerifyErr) {
           return cb({
             code: CODE_CHANGE_PASSWORD_ERROR,

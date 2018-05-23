@@ -1,5 +1,4 @@
 import BaseLogic from 'server/logic/base';
-import SecretsManager from 'server/managers/secrets';
 import {
   CODE_NONEXISTENT_SECRET,
   CODE_READ_SECRET_ERROR,
@@ -10,12 +9,6 @@ import {
 } from 'shared/constants/error';
 
 export default class SecretsLogic extends BaseLogic {
-  constructor(ctx) {
-    super(ctx);
-
-    this.manager = new SecretsManager(ctx);
-  }
-
   /**
    * Add a new secret.
    *
@@ -38,7 +31,9 @@ export default class SecretsLogic extends BaseLogic {
       },
     };
 
-    return this.manager.addSecret({ ...details, secret: encrypted }, (err, addedRow) => {
+    const secret = { ...details, secret: encrypted };
+
+    return this.ctx.manager.secrets.addSecret(secret, (err, addedRow) => {
       if (err) {
         return cb(errors[err.code] || errors.default);
       }
@@ -60,7 +55,7 @@ export default class SecretsLogic extends BaseLogic {
    * @param {Function} cb Callback invoked on completion.
    */
   deleteSecretByID(id, cb) {
-    return this.manager.deleteSecret(id, (err) => {
+    return this.ctx.manager.secrets.deleteSecret(id, (err) => {
       if (err) {
         return cb({
           code: CODE_DELETE_SECRET_ERROR,
@@ -78,7 +73,7 @@ export default class SecretsLogic extends BaseLogic {
    * @param {Function} cb Callback invoked on completion.
    */
   deleteAllSecrets(cb) {
-    return this.manager.deleteAllSecrets(false, (err) => {
+    return this.ctx.manager.secrets.deleteAllSecrets(false, (err) => {
       if (err) {
         return cb({
           code: CODE_DELETE_SECRET_ERROR,
@@ -121,7 +116,7 @@ export default class SecretsLogic extends BaseLogic {
    * @param {Function} cb Callback invoked on completion with a list of secrets.
    */
   getAllSecrets(cb) {
-    return this.manager.getAllSecrets((err, results) => {
+    return this.ctx.manager.secrets.getAllSecrets((err, results) => {
       if (err) {
         return cb({
           code: CODE_READ_SECRET_ERROR,
@@ -149,8 +144,8 @@ export default class SecretsLogic extends BaseLogic {
    */
   _getSecretByParam(param, value, password, cb) {
     const lookupFunc = {
-      id: this.manager.getSecretByID.bind(this.manager),
-      name: this.manager.getSecretByName.bind(this.manager),
+      id: this.ctx.manager.secrets.getSecretByID.bind(this.ctx.manager.secrets),
+      name: this.ctx.manager.secrets.getSecretByName.bind(this.ctx.manager.secrets),
     };
 
     return lookupFunc[param](value, (err, [row]) => {

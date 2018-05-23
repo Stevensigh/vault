@@ -3,6 +3,7 @@ import CryptographyClient from 'server/clients/cryptography';
 import DBClient from 'server/clients/db';
 import AuthLogic from 'server/logic/auth';
 import SecretsLogic from 'server/logic/secrets';
+import SecretsManager from 'server/managers/secrets';
 
 const {
   SALT_FILE_PATH = '.salt',
@@ -26,12 +27,19 @@ export default class Context {
       pass: DB_PASS,
     });
     this.logic = this._initLogicModules();
+    this.manager = this._initManagerModules();
   }
 
   _initLogicModules() {
     return {
       auth: new AuthLogic(this),
       secrets: new SecretsLogic(this),
+    };
+  }
+
+  _initManagerModules() {
+    return {
+      secrets: new SecretsManager(this),
     };
   }
 }
