@@ -14,6 +14,7 @@ dotenv.config();
 const BUILD_ENV_VARS = [
   'NODE_ENV',
   'FOOTER_TEXT',
+  'SENTRY_CLIENT_DSN',
 ];
 
 const isProduction = process.env.NODE_ENV === 'production';
