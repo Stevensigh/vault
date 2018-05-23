@@ -2,7 +2,6 @@
 
 import inquirer from 'inquirer';
 import Context from 'server/context';
-import AuthLogic from 'server/logic/auth';
 
 const INSTRUCTIONS_TEXT = `
 VAULT | Set Master Password
@@ -19,7 +18,6 @@ already stored.
 
 const main = async () => {
   const ctx = new Context();
-  const auth = new AuthLogic(ctx);
 
   console.log(INSTRUCTIONS_TEXT);
 
@@ -34,7 +32,7 @@ const main = async () => {
 
   const { password } = await inquirer.prompt(prompts);
 
-  return auth.setVerification(password, (err) => {
+  return ctx.logic.auth.setVerification(password, (err) => {
     if (err) {
       console.error('There was an error setting the master password!');
       console.error(err);

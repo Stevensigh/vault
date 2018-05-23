@@ -1,6 +1,7 @@
 import fs from 'fs';
 import CryptographyClient from 'server/clients/cryptography';
 import DBClient from 'server/clients/db';
+import AuthLogic from 'server/logic/auth';
 
 const {
   SALT_FILE_PATH = '.salt',
@@ -23,5 +24,12 @@ export default class Context {
       user: DB_USER,
       pass: DB_PASS,
     });
+    this.logic = this._initLogicModules();
+  }
+
+  _initLogicModules() {
+    return {
+      auth: new AuthLogic(this),
+    };
   }
 }

@@ -1,6 +1,5 @@
 import { route, withSchema } from 'supercharged/server';
 import BaseHandler from 'server/handlers/base';
-import AuthLogic from 'server/logic/auth';
 import {
   createSession,
   invalidateSession,
@@ -41,9 +40,7 @@ export default class AuthStatusHandler extends BaseHandler {
     required: ['password'],
   })
   post({ password }) {
-    const auth = new AuthLogic(this.ctx);
-
-    return auth.verify(password, (verifyErr) => {
+    return this.ctx.logic.auth.verify(password, (verifyErr) => {
       if (verifyErr) {
         return this.error(verifyErr);
       }
