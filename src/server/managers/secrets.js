@@ -67,6 +67,24 @@ export default class SecretsManager extends BaseManager {
   }
 
   /**
+   * Retrieve a secret entry by its exact name.
+   *
+   * @param {String} name Name of the secret (case sensitive!)
+   * @param {Function} cb Callback invoked with (err, row).
+   */
+  getSecretByName(name, cb) {
+    const sql = `
+      SELECT *
+      FROM secret
+      WHERE name = ?
+    `;
+
+    const values = [name];
+
+    return this.ctx.db.exec(sql, values, cb);
+  }
+
+  /**
    * Get a list of all non-protected secrets.
    *
    * @param {Function} cb Callback invoked with (err, rows).

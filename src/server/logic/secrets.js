@@ -99,7 +99,61 @@ export default class SecretsLogic extends BaseLogic {
    *                      secret string contents.
    */
   getSecretByID(id, password, cb) {
-    return this.manager.getSecretByID(id, (err, [row]) => {
+    return this._getSecretByParam('id', id, password, cb);
+  }
+
+  /**
+   * Retrieve and decrypt a specific secret by name.
+   *
+   * @param {String} name Name of the secret to read (case sensitive).
+   * @param {String} password Master decryption password.
+   * @param {Function} cb Callback invoked on completion with the secret details and decrypted
+   *                      secret string contents.
+   */
+  getSecretByName(name, password, cb) {
+    return this._getSecretByParam('name', name, password, cb);
+  }
+
+  /**
+   * Retrieve a list of all secrets and their properties. Note that this will *not* decrypt the
+   * selected secrets.
+   *
+   * @param {Function} cb Callback invoked on completion with a list of secrets.
+   */
+  getAllSecrets(cb) {
+    return this.manager.getAllSecrets((err, results) => {
+      if (err) {
+        return cb({
+          code: CODE_READ_SECRET_ERROR,
+          message: 'There was an undefined error when trying to retrieve a list of all secrets.',
+        });
+      }
+
+      const formatted = results
+        .map(({ id, name, identity, link, timestamp }) =>
+          ({ id, name, identity, link, timestamp }));
+
+      return cb(null, formatted);
+    });
+  }
+
+  /**
+   * General-purpose function to retrieve a secret by a specific parameter value.
+   *
+   * @param {String} param The secret search parameter: one of 'id' or 'name'.
+   * @param {String|Number} value The value of the search parameter.
+   * @param {String} password Master decryption password.
+   * @param {Function} cb Callback invoked on completion with the secret details and decrypted
+   *                      secret string contents.
+   * @private
+   */
+  _getSecretByParam(param, value, password, cb) {
+    const lookupFunc = {
+      id: this.manager.getSecretByID.bind(this.manager),
+      name: this.manager.getSecretByName.bind(this.manager),
+    };
+
+    return lookupFunc[param](value, (err, [row]) => {
       if (err) {
         return cb({
           code: CODE_READ_SECRET_ERROR,
@@ -134,29 +188,6 @@ export default class SecretsLogic extends BaseLogic {
         secret: decrypted,
         notes: details.notes,
       });
-    });
-  }
-
-  /**
-   * Retrieve a list of all secrets and their properties. Note that this will *not* decrypt the
-   * selected secrets.
-   *
-   * @param {Function} cb Callback invoked on completion with a list of secrets.
-   */
-  getAllSecrets(cb) {
-    return this.manager.getAllSecrets((err, results) => {
-      if (err) {
-        return cb({
-          code: CODE_READ_SECRET_ERROR,
-          message: 'There was an undefined error when trying to retrieve a list of all secrets.',
-        });
-      }
-
-      const formatted = results
-        .map(({ id, name, identity, link, timestamp }) =>
-          ({ id, name, identity, link, timestamp }));
-
-      return cb(null, formatted);
     });
   }
 }
