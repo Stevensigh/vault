@@ -14,26 +14,25 @@ export default class SecretsHandler extends BaseHandler {
         type: 'number',
         min: 1,
       },
+      name: {
+        type: 'string',
+        minLength: 1,
+      },
     },
   })
-  get({ id = null }, password) {
-    if (id === null) {
-      return this.ctx.logic.secrets.getAllSecrets((err, secrets) => {
-        if (err) {
-          return this.error(err);
-        }
-
-        return this.success({ data: secrets });
-      });
+  get({ id = null, name = null }, password) {
+    if (id !== null) {
+      return this.ctx.logic.secrets.getSecretByID(id, password,
+        (err, secret) => (err ? this.error(err) : this.success({ data: secret })));
     }
 
-    return this.ctx.logic.secrets.getSecretByID(id, password, (err, secret) => {
-      if (err) {
-        return this.error(err);
-      }
+    if (name !== null) {
+      return this.ctx.logic.secrets.getSecretByName(name, password,
+        (err, secret) => (err ? this.error(err) : this.success({ data: secret })));
+    }
 
-      return this.success({ data: secret });
-    });
+    return this.ctx.logic.secrets.getAllSecrets((err, secrets) =>
+      (err ? this.error(err) : this.success({ data: secrets })));
   }
 
   /**
