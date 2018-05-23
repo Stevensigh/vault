@@ -23,7 +23,20 @@ export const requireAuth = (target, key, descriptor) => {
 
   // eslint-disable-next-line no-param-reassign
   descriptor.value = function abortOnUnauthenticatedRequest() {
+    const nonSessionPassword = this.req.header('X-Vault-Password');
     const sid = this.req.cookies[SESSION_COOKIE_NAME];
+
+    // Supplying the master password as the X-Vault-Password header takes precedence over any
+    // session-based authentication
+    if (nonSessionPassword) {
+      return this.ctx.logic.auth.verify(nonSessionPassword, (verifyErr) => {
+        if (verifyErr) {
+          return this.error(verifyErr);
+        }
+
+        return wrappedFunc.call(this, nonSessionPassword);
+      });
+    }
 
     if (!sid || !sessions[sid]) {
       return this.error({
