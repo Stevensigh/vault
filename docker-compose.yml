@@ -16,7 +16,6 @@ services:
     build:
       context: .
       args:
-        port: ${PORT}
         db_host: db
         db_port: 3306
         db_name: vault
