@@ -2,6 +2,7 @@ import fs from 'fs';
 import CryptographyClient from 'server/clients/cryptography';
 import DBClient from 'server/clients/db';
 import AuthLogic from 'server/logic/auth';
+import SecretsLogic from 'server/logic/secrets';
 
 const {
   SALT_FILE_PATH = '.salt',
@@ -30,6 +31,7 @@ export default class Context {
   _initLogicModules() {
     return {
       auth: new AuthLogic(this),
+      secrets: new SecretsLogic(this),
     };
   }
 }

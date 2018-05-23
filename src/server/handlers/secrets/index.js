@@ -1,18 +1,9 @@
 import { route, withSchema } from 'supercharged/server';
 import BaseHandler from 'server/handlers/base';
-import SecretsLogic from 'server/logic/secrets';
 import { requireAuth } from 'server/middleware/auth';
 
-class SecretsBaseHandler extends BaseHandler {
-  constructor(req, res, ctx) {
-    super(req, res, ctx);
-
-    this.logic = new SecretsLogic(ctx);
-  }
-}
-
 @route('/api/secrets')
-export default class SecretsHandler extends SecretsBaseHandler {
+export default class SecretsHandler extends BaseHandler {
   /**
    * Read a specific secret if an ID is supplied, or retrieve a list of all secrets.
    */
@@ -27,7 +18,7 @@ export default class SecretsHandler extends SecretsBaseHandler {
   })
   get({ id = null }, password) {
     if (id === null) {
-      return this.logic.getAllSecrets((err, secrets) => {
+      return this.ctx.logic.secrets.getAllSecrets((err, secrets) => {
         if (err) {
           return this.error(err);
         }
@@ -36,7 +27,7 @@ export default class SecretsHandler extends SecretsBaseHandler {
       });
     }
 
-    return this.logic.getSecretByID(id, password, (err, secret) => {
+    return this.ctx.logic.secrets.getSecretByID(id, password, (err, secret) => {
       if (err) {
         return this.error(err);
       }
@@ -78,7 +69,7 @@ export default class SecretsHandler extends SecretsBaseHandler {
   post({ name, identity = null, link = null, secret, notes = null }, password) {
     const secretDetails = { name, identity, link, secret, notes };
 
-    return this.logic.addSecret(secretDetails, password, (err, entry) => {
+    return this.ctx.logic.secrets.addSecret(secretDetails, password, (err, entry) => {
       if (err) {
         return this.error(err);
       }
@@ -104,7 +95,7 @@ export default class SecretsHandler extends SecretsBaseHandler {
   })
   delete({ id = null }) {
     if (id === null) {
-      return this.logic.deleteAllSecrets((err) => {
+      return this.ctx.logic.secrets.deleteAllSecrets((err) => {
         if (err) {
           return this.error(err);
         }
@@ -115,7 +106,7 @@ export default class SecretsHandler extends SecretsBaseHandler {
       });
     }
 
-    return this.logic.deleteSecretByID(id, (err) => {
+    return this.ctx.logic.secrets.deleteSecretByID(id, (err) => {
       if (err) {
         return this.error(err);
       }
