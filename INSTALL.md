@@ -76,7 +76,7 @@ Then, reverse proxy from the web server of your choice to the port on which Vaul
 
     # This directive is optional; it tells Apache to serve the frontend directly,
     # bypassing the Node HTTP server. It provides a small performance optimization.
-    Alias / /var/www/vault/dist/index.html
+    AliasMatch "^/((?!.*api/).+)?$" /var/www/vault/dist/index.html
 
     ProxyRequests Off
     ProxyPreserveHost On
