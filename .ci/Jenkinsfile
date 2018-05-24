@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-            image 'docker.internal.kevinlin.info/infra/ci-base:0.1.0'
+            image 'docker.internal.kevinlin.info/infra/ci-base:0.1.1'
             label 'docker-executor'
         }
     }
@@ -14,12 +14,28 @@ pipeline {
         }
         stage('Test') {
             parallel {
-                stage('Build') {
+                stage('Build (client)') {
                     environment {
                         NODE_ENV = 'production'
                     }
                     steps {
-                        sh 'npm run build'
+                        sh 'npm run build:client'
+                    }
+                }
+                stage('Build (server)') {
+                    environment {
+                        NODE_ENV = 'production'
+                    }
+                    steps {
+                        sh 'npm run build:server'
+                    }
+                }
+                stage('Build (shared)') {
+                    environment {
+                        NODE_ENV = 'production'
+                    }
+                    steps {
+                        sh 'npm run build:shared'
                     }
                 }
                 stage('Lint') {
