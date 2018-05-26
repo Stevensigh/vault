@@ -1,5 +1,8 @@
 ![Vault](https://static.kevinlin.info/blog/vault/banner.png)
 
+[![Build Status](https://travis-ci.org/LINKIWI/vault.svg?branch=master)](https://travis-ci.org/LINKIWI/vault)
+[![Coverage Status](https://coveralls.io/repos/github/LINKIWI/vault/badge.svg?branch=master)](https://coveralls.io/github/LINKIWI/vault?branch=master)
+
 **Vault** is a secure, web-based secrets and credentials store.
 
 ## Features
