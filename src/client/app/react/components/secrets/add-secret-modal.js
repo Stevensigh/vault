@@ -112,6 +112,7 @@ class AddSecretModal extends Component {
                 placeholder="hunter2"
                 onChange={handleChange('secret')}
                 error={secretErr}
+                autoComplete="new-password"
                 secondary
               />
             </Spacing>
